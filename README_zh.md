@@ -163,6 +163,17 @@ pnpm build
 
 ---
 
+## ❓ 常见问题 (FAQ)
+
+### macOS 提示「应用已损坏，应将它移到废纸篓」怎么办？
+由于开源客户端尚未购买 Apple 付费开发者证书签名公证，macOS Gatekeeper 会对从浏览器下载的应用施加安全隔离（Quarantine）。
+**解决方法**：打开「终端（Terminal）」，复制执行以下命令即可正常打开：
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/ParrotLingo.app
+```
+
+---
+
 ## 🔄 自动化更新机制
 
 ParrotLingo 配置了完整的 CI/CD 自动发布与客户端静默增量更新流：
