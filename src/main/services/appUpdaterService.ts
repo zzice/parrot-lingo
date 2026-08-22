@@ -280,8 +280,22 @@ class AppUpdaterServiceImpl {
    * 退出应用并安装更新
    */
   public quitAndInstall(): void {
+    console.log('[AppUpdater] Triggering quitAndInstall...')
+    ;(app as any).isQuitting = true
+
+    // 移除主窗口 close 事件监听，防止 event.preventDefault() 阻断 Electron 退出与更新安装
+    const mainWin = getMainWindow()
+    if (mainWin && !mainWin.isDestroyed()) {
+      mainWin.removeAllListeners('close')
+    }
+
     setImmediate(() => {
-      autoUpdater.quitAndInstall(true, true)
+      try {
+        autoUpdater.quitAndInstall(false, true)
+      } catch (err) {
+        console.error('[AppUpdater] autoUpdater.quitAndInstall error:', err)
+        app.quit()
+      }
     })
   }
 
