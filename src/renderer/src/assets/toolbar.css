@@ -1,0 +1,140 @@
+:root {
+  --toolbar-bg: rgba(255, 255, 255, 0.98);
+  --toolbar-border: rgba(0, 0, 0, 0.08);
+  --toolbar-shadow: 0 2px 4px rgba(50, 50, 50, 0.1), 0 1px 2px rgba(50, 50, 50, 0.06);
+  --toolbar-text: #334155;
+  --toolbar-text-muted: #64748b;
+  --toolbar-hover-bg: rgba(241, 245, 249, 0.9);
+  --toolbar-accent: var(--color-primary, #10b981);
+  --toolbar-divider: rgba(0, 0, 0, 0.06);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --toolbar-bg: rgba(24, 28, 38, 0.96);
+    --toolbar-border: rgba(255, 255, 255, 0.14);
+    --toolbar-shadow: 0 2px 5px rgba(0, 0, 0, 0.35);
+    --toolbar-text: #e2e8f0;
+    --toolbar-text-muted: #94a3b8;
+    --toolbar-hover-bg: rgba(255, 255, 255, 0.08);
+    --toolbar-accent: var(--color-primary, #34d399);
+    --toolbar-divider: rgba(255, 255, 255, 0.08);
+  }
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  margin: 0 !important;
+  padding: 0 !important;
+  background: transparent !important;
+  background-color: transparent !important;
+  overflow: hidden;
+  font-family:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.toolbar-wrapper {
+  margin: 2px 3px 5px 3px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.toolbar-container {
+  display: inline-flex;
+  align-items: stretch;
+  height: 36px;
+  background: var(--toolbar-bg);
+  border: 0.5px solid var(--toolbar-border);
+  border-radius: 10px;
+  box-shadow: var(--toolbar-shadow);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.toolbar-logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 8px 0 10px;
+  -webkit-app-region: drag;
+  cursor: grab;
+}
+
+.toolbar-logo img {
+  width: 24px;
+  height: 24px;
+  object-fit: contain;
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.toolbar-divider {
+  width: 1px;
+  background: var(--toolbar-divider);
+  margin: 8px 0;
+}
+
+.toolbar-actions {
+  display: inline-flex;
+  align-items: stretch;
+  -webkit-app-region: no-drag;
+}
+
+.toolbar-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 0 10px;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--toolbar-text);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all 0.15s ease;
+}
+
+.toolbar-btn:focus,
+.toolbar-btn:focus-visible {
+  outline: none;
+  box-shadow: none;
+}
+
+.toolbar-btn:hover {
+  background: var(--toolbar-hover-bg);
+  color: var(--toolbar-accent);
+}
+
+.toolbar-btn svg {
+  width: 15px;
+  height: 15px;
+  color: var(--toolbar-text-muted);
+  transition: color 0.15s ease;
+  flex-shrink: 0;
+}
+
+.toolbar-btn:hover svg {
+  color: var(--toolbar-accent);
+}
+
+.toolbar-btn.copied {
+  color: var(--toolbar-accent);
+}
+
+.toolbar-btn.copied svg {
+  color: var(--toolbar-accent);
+}

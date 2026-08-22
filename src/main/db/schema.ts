@@ -1,0 +1,170 @@
+import { ModelProvider, AppSettings, CorpusItem } from '../../renderer/src/types'
+
+export const DEFAULT_PROVIDERS: ModelProvider[] = [
+  {
+    id: 'parrotlingo',
+    name: 'ParrotLingo AI',
+    icon: 'parrot',
+    badge: 'Official',
+    badgeColor: '#10b981',
+    description: 'ParrotLingo 官方专为英语划词、语境解析优化的原生多模型通道',
+    officialUrl: 'https://parrotlingo.com',
+    apiKeyDocUrl: 'https://parrotlingo.com/account/keys',
+    baseUrl: 'https://api.parrotlingo.com/v1',
+    apiKey: '',
+    enabled: true,
+    isBuiltIn: true,
+    isPinned: true,
+    models: []
+  },
+  {
+    id: 'deepseek',
+    name: 'DeepSeek',
+    icon: 'deepseek',
+    description: 'DeepSeek 官方 API 接入，支持 DeepSeek-V3 与 DeepSeek-R1 推理模型',
+    officialUrl: 'https://platform.deepseek.com',
+    apiKeyDocUrl: 'https://platform.deepseek.com/api_keys',
+    baseUrl: 'https://api.deepseek.com/v1',
+    apiKey: '',
+    enabled: true,
+    isBuiltIn: true,
+    models: []
+  },
+  {
+    id: 'zhipu',
+    name: '智谱 AI',
+    icon: 'zhipu',
+    description: '智谱开放平台 GLM-4 系列模型支持',
+    officialUrl: 'https://open.bigmodel.cn',
+    apiKeyDocUrl: 'https://open.bigmodel.cn/usercenter/apikeys',
+    baseUrl: 'https://open.bigmodel.cn/api/paas/v4',
+    apiKey: '',
+    enabled: true,
+    isBuiltIn: true,
+    models: []
+  }
+]
+
+export const DEFAULT_SETTINGS: AppSettings = {
+  selection: {
+    enabled: false,
+    captureMethod: 'selection',
+    compactMode: false,
+    followToolbar: true,
+    rememberSize: false,
+    autoClose: false,
+    autoPin: false,
+    opacity: 100,
+    shortcutKey: 'Alt+S',
+    autoPronounce: false,
+    autoExplain: true,
+    defaultModelId: 'parrot-lingo-v1',
+    targetLanguage: 'zh-CN',
+    filterMode: 'blacklist',
+    blacklistApps: ['ParrotLingo', 'com.parrotlingo.app'],
+    whitelistApps: []
+  },
+  system: {
+    theme: 'dark',
+    themeColor: '#EF4444',
+    language: 'zh-CN',
+
+    autoLaunch: false,
+    startMinimized: false,
+    showTrayIcon: true,
+    closeToTray: true,
+    proxyMode: 'system',
+
+    customProxyUrl: '',
+    proxyBypassRules: 'localhost,127.0.0.1,::1,*.local,<local>'
+  },
+  defaultModels: {
+    globalModel: 'parrotlingo:parrot-lingo-v1',
+    fastModel: 'follow',
+    deepModel: 'follow',
+    collocationModel: 'follow',
+    readingModel: 'follow',
+    autoRetry: true
+  }
+}
+
+export const INITIAL_CORPUS_ITEMS: CorpusItem[] = [
+  {
+    id: 'corpus-demo-1',
+    text: 'serendipity',
+    canonical: 'serendipity',
+    phonetic: '/ˌser.ənˈdɪp.ə.t̬i/',
+    partOfSpeech: 'noun',
+    translation: 'n. 意外发现珍奇事物的本领；意外的机缘/惊喜',
+    explanation: '指偶然且幸运地发现美好、有趣或有价值的事物的能力或过程。',
+    difficulty: 'C1',
+    domain: 'general',
+    alternativeExpressions: ['happy accident', 'stroke of luck', 'pleasant surprise', 'fluke'],
+    nativeExample: 'Finding this cozy quiet cafe tucked in the alley was pure serendipity.',
+    tags: ['高频雅思', '高级表达', '生活日常'],
+    encounterCount: 1,
+    sourceApp: 'Safari',
+    srsStage: 0,
+    srsEaseFactor: 2.5,
+    srsInterval: 1,
+    nextReviewAt: Date.now(),
+    reviewCount: 0,
+    correctCount: 0,
+    isGraduated: false,
+    isArchived: false,
+    createdAt: Date.now() - 3600000 * 2,
+    updatedAt: Date.now() - 3600000 * 2
+  },
+  {
+    id: 'corpus-demo-2',
+    text: 'ephemeral',
+    canonical: 'ephemeral',
+    phonetic: '/ɪˈfem.ər.əl/',
+    partOfSpeech: 'adjective',
+    translation: 'adj. 短暂的，瞬息万变的',
+    explanation: '通常形容美好、生命力或现象只存在很短的时间。',
+    difficulty: 'C2',
+    domain: 'literature',
+    alternativeExpressions: ['transient', 'fleeting', 'short-lived', 'momentary'],
+    nativeExample: 'The cherry blossoms are famously ephemeral, lasting only a week or two.',
+    tags: ['文学修辞', 'GRE词汇'],
+    encounterCount: 2,
+    sourceApp: 'Apple Notes',
+    srsStage: 1,
+    srsEaseFactor: 2.5,
+    srsInterval: 1,
+    nextReviewAt: Date.now(),
+    reviewCount: 1,
+    correctCount: 1,
+    isGraduated: false,
+    isArchived: false,
+    createdAt: Date.now() - 3600000 * 24,
+    updatedAt: Date.now() - 3600000 * 24
+  },
+  {
+    id: 'corpus-demo-3',
+    text: 'cut corners',
+    canonical: 'cut corners',
+    phonetic: '/kʌt ˈkɔːr.nɚz/',
+    partOfSpeech: 'phrase',
+    translation: 'idiom. 走捷径；偷工减料；图省事',
+    explanation: '为了省钱、省时间或省力气而采取不合格或敷衍的做法。',
+    difficulty: 'B2',
+    domain: 'business',
+    alternativeExpressions: ['take shortcuts', 'scrimp on quality', 'rush the job'],
+    nativeExample: 'When you are designing safety systems for aircraft, you cannot cut corners.',
+    tags: ['职场商务', '地道习语'],
+    encounterCount: 3,
+    sourceApp: 'Slack',
+    srsStage: 2,
+    srsEaseFactor: 2.5,
+    srsInterval: 3,
+    nextReviewAt: Date.now(),
+    reviewCount: 2,
+    correctCount: 2,
+    isGraduated: false,
+    isArchived: false,
+    createdAt: Date.now() - 3600000 * 48,
+    updatedAt: Date.now() - 3600000 * 48
+  }
+]

@@ -1,0 +1,5 @@
+provider: github
+owner: zzice
+repo: parrot-lingo
+# provider: generic
+# url: http://localhost:57296

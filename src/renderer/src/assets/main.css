@@ -1,0 +1,99 @@
+@import 'tailwindcss';
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+@layer base {
+  :root {
+    --bg-app: #f1f5f9;
+    --bg-card: #ffffff;
+    --bg-card-hover: #f8fafc;
+    --bg-sidebar: #e2e8f0;
+    --border-main: #cbd5e1;
+    --border-card: #e2e8f0;
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #94a3b8;
+    --color-primary: #ef4444;
+    --color-primary-rgb: 239, 68, 68;
+    --color-primary-hover: #dc2626;
+    --color-primary-active: #b91c1c;
+    --color-primary-foreground: #ffffff;
+    --color-primary-subtle: rgba(239, 68, 68, 0.12);
+    --color-primary-subtle-hover: rgba(239, 68, 68, 0.2);
+    --color-primary-border: rgba(239, 68, 68, 0.3);
+    --accent: var(--color-primary);
+  }
+
+  .dark {
+    --bg-app: #090d16;
+    --bg-card: #111827;
+    --bg-card-hover: #1e293b;
+    --bg-sidebar: #0f172a;
+    --border-main: #1e293b;
+    --border-card: #1f2937;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --accent: var(--color-primary);
+  }
+
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100%;
+    font-family:
+      -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--bg-app);
+    color: var(--text-primary);
+    user-select: none;
+    overflow: hidden;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  html.selection-popup-active,
+  body.selection-popup-active,
+  .selection-popup-mode,
+  .selection-popup-mode body,
+  .selection-popup-mode #root {
+    background: transparent !important;
+    background-color: transparent !important;
+  }
+
+  /* 全局禁用所有按钮的默认浏览器聚焦虚线与轮廓边框 */
+  button:focus,
+  button:focus-visible,
+  [role='button']:focus,
+  [role='button']:focus-visible {
+    outline: none !important;
+    box-shadow: none !important;
+  }
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+.drag-region {
+  -webkit-app-region: drag;
+}
+
+.no-drag {
+  -webkit-app-region: no-drag;
+}

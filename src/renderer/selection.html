@@ -1,0 +1,45 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="initial-scale=1, width=device-width" />
+    <title>ParrotLingo</title>
+    <style>
+      /* 划词功能窗口内联透明样式
+       * 必须在 <head> 内写死，确保在任何 CSS 加载前背景已透明
+ */
+      html {
+        margin: 0 !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+      }
+
+      body {
+        margin: 0 !important;
+        padding: 0 !important;
+        overflow: hidden !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        background: transparent !important;
+        background-color: transparent !important;
+        background-image: none !important;
+        -webkit-user-select: none;
+        user-select: none;
+      }
+
+      #root {
+        margin: 0 !important;
+        padding: 0 !important;
+        width: 100% !important;
+        height: 100% !important;
+        background: transparent !important;
+        background-color: transparent !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/selection.tsx"></script>
+  </body>
+</html>
