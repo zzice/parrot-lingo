@@ -50,6 +50,7 @@ class AppUpdaterServiceImpl {
   }
 
   public init(): void {
+    autoUpdater.logger = console
     autoUpdater.autoDownload = false
     // 严禁退出时自动静默安装，防止系统关机时文件损坏或被异常卸载，必须由用户明确触发
     autoUpdater.autoInstallOnAppQuit = false
@@ -283,11 +284,13 @@ class AppUpdaterServiceImpl {
     console.log('[AppUpdater] Triggering quitAndInstall...')
     ;(app as any).isQuitting = true
 
-    // 移除主窗口 close 事件监听，防止 event.preventDefault() 阻断 Electron 退出与更新安装
-    const mainWin = getMainWindow()
-    if (mainWin && !mainWin.isDestroyed()) {
-      mainWin.removeAllListeners('close')
-    }
+    // 移除所有窗口 close 事件监听，防止任何窗口的 event.preventDefault() 拦截阻断 Electron 退出与更新安装
+    const { BrowserWindow } = require('electron')
+    BrowserWindow.getAllWindows().forEach((win: any) => {
+      if (!win.isDestroyed()) {
+        win.removeAllListeners('close')
+      }
+    })
 
     setImmediate(() => {
       try {
