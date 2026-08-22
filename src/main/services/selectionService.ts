@@ -150,10 +150,12 @@ export class SelectionService {
     }
   }
 
+  private static lastSelectionTime = 0
+
   // ─── Text selection handler ────────────────────────────────────────────────
 
   private static processTextSelection = (selectionData: TextSelectionData): void => {
-    if (!selectionData?.text) return
+    if (!selectionData?.text || !selectionData.text.trim()) return
 
     const settings = SettingsRepository.get()
     if (!settings?.selection?.enabled) {
@@ -163,6 +165,8 @@ export class SelectionService {
 
     // 应用黑白名单过滤
     if (!this.shouldProcess(selectionData, settings)) return
+
+    this.lastSelectionTime = Date.now()
 
     // 记录触发划词的原生应用名称 (优先使用 appName / 友好的应用程序名，例如 Google Chrome, Cursor, Safari 等)
     const rawApp =
@@ -174,7 +178,7 @@ export class SelectionService {
 
     // 显示工具栏
     showToolbarWindow(
-      selectionData.text,
+      selectionData.text.trim(),
       refPoint,
       this.TOOLBAR_WIDTH,
       this.TOOLBAR_HEIGHT,
@@ -183,13 +187,15 @@ export class SelectionService {
 
     // 将选中文本及来源应用通知给工具栏渲染进程
     eventBus.broadcastToAllWindows('selection.text_selected', {
-      text: selectionData.text,
+      text: selectionData.text.trim(),
       context: selectionData.context,
       sourceApp: this.lastActiveAppName
     })
 
-    // 启动隐藏监听（鼠标点击外部、滚轮、按键）
-    this.startHideListeners()
+    // 延迟 200ms 启动隐藏监听（防划词释放瞬间残留的 mouse-down 误触导致工具栏瞬间被销毁）
+    setTimeout(() => {
+      this.startHideListeners()
+    }, 200)
   }
 
   // ─── Positioning ──────────────────────────────────────────────────────────
@@ -308,6 +314,8 @@ export class SelectionService {
   }
 
   private static handleMouseDownHide = (data: MouseEventData): void => {
+    // 划词后 250ms 内忽略外部点击，防止双击或拖拽余震误关闭
+    if (Date.now() - this.lastSelectionTime < 250) return
     if (!isToolbarVisible()) return
 
     const bounds = getToolbarWindowBounds()

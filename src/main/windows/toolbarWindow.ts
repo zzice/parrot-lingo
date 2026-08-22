@@ -61,10 +61,7 @@ export function createToolbarWindow(): BrowserWindow {
     hasShadow: false,
     thickFrame: false,
     roundedCorners: false,
-    // [macOS] 悬浮面板配置：使用 panel 类型、acceptFirstMouse 与 hiddenInMissionControl
-    type: isMac ? 'panel' : 'toolbar',
-    hiddenInMissionControl: isMac ? true : undefined,
-    acceptFirstMouse: isMac ? true : undefined,
+    focusable: true,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
       sandbox: false,
@@ -121,18 +118,15 @@ export function showToolbarWindow(
   win.setBounds({ x: pos.x, y: pos.y, width: toolbarWidth, height: toolbarHeight })
 
   if (process.platform === 'darwin') {
-    // [macOS] 原生悬浮展示流程：
-    // 先 setFocusable(false) 避免全屏或空间切换时主窗口闪烁/丢失
-    win.setFocusable(false)
     win.setVisibleOnAllWorkspaces(true, {
       visibleOnFullScreen: true,
       skipTransformProcessType: true
     })
+    win.setAlwaysOnTop(true, 'screen-saver')
     win.showInactive()
-    // 显示后立刻恢复 focusable: true，杜绝 macOS 在点击时因 focusable: false 连带激活主窗口
-    win.setFocusable(true)
   } else {
-    win.show()
+    win.setAlwaysOnTop(true)
+    win.showInactive()
   }
 }
 
