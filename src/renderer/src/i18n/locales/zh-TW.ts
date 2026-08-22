@@ -364,7 +364,8 @@ export default {
     undo: '撤銷 ({{seconds}}s)',
     undoTooltip: '撤銷本次遇見記錄',
     notRecorded: '○ 未記錄',
-    analyzing: '正在分析...'
+    analyzing: '正在分析...',
+    streaming: '即時生成中...'
   },
   accessibilityModal: {
     title: '開啟劃詞助手 · 需要輔助功能授權',

@@ -528,15 +528,9 @@ export const SelectionPopup: React.FC = () => {
                   ? t('selectionSettings.actionTranslate') || '翻译'
                   : t('selectionSettings.actionExplain') || '解释'}
               </span>
-              {isStreaming && !loading && (
-                <span className="inline-flex items-center space-x-1 px-1.5 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[10px] font-medium animate-pulse">
-                  <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
-                  <span>流式生成中</span>
-                </span>
-              )}
             </div>
 
-            {/* 划词弹窗即时切换模型 (放宽宽度上限，完整展示模型名) */}
+            {/* 划词弹窗即时切换模型 (放宽宽度上限，完整展示模型名，位置固定不位移) */}
             <div className="[-webkit-app-region:no-drag] shrink-0 min-w-[130px] max-w-[220px]">
               <ModelSelect
                 value={currentModelKey}
@@ -1023,10 +1017,15 @@ export const SelectionPopup: React.FC = () => {
                   </span>
                 </div>
               </div>
-            ) : loading ? (
-              <span className="text-[11px] text-slate-400 dark:text-slate-500 whitespace-nowrap">
-                {t('selectionPopup.analyzing') || '正在分析...'}
-              </span>
+            ) : isStreaming || loading ? (
+              <div className="inline-flex items-center space-x-1.5 px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 text-[11px] font-medium animate-pulse shrink-0">
+                <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                <span className="whitespace-nowrap">
+                  {isStreaming
+                    ? t('selectionPopup.streaming') || '流式生成中...'
+                    : t('selectionPopup.analyzing') || '正在分析...'}
+                </span>
+              </div>
             ) : null}
           </div>
         </div>

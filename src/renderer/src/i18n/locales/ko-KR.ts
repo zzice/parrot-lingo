@@ -364,7 +364,8 @@ export default {
     undo: '실행 취소 ({{seconds}}s)',
     undoTooltip: '이번 만남 기록 취소',
     notRecorded: '○ 미기록',
-    analyzing: '분석 중...'
+    analyzing: '분석 중...',
+    streaming: '생성 중...'
   },
   accessibilityModal: {
     title: '선택 어시스턴트 · 접근성 권한 필요',

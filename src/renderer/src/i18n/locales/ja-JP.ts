@@ -363,9 +363,10 @@ export default {
     recordedFirst: '記録済み · 初めての出会い',
     recordedTimes: '記録済み · {{count}} 回目の出会い',
     undo: '取り消し ({{seconds}}s)',
-    undoTooltip: '今回のエンカウント記録を取り消す',
+    undoTooltip: '今回の出会い記録を取り消す',
     notRecorded: '○ 未記録',
-    analyzing: '分析中...'
+    analyzing: '分析中...',
+    streaming: '生成中...'
   },
   accessibilityModal: {
     title: '選択アシスタント · アクセシビリティ権限が必要です',

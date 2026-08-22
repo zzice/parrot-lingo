@@ -372,7 +372,8 @@ export default {
     undo: 'Undo ({{seconds}}s)',
     undoTooltip: 'Undo this encounter record',
     notRecorded: '○ Not Recorded',
-    analyzing: 'Analyzing...'
+    analyzing: 'Analyzing...',
+    streaming: 'Streaming...'
   },
   accessibilityModal: {
     title: 'Enable Selection Assistant · Accessibility Required',
