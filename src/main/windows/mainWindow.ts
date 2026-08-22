@@ -13,6 +13,14 @@ export function createMainWindow(): BrowserWindow {
     return mainWindow
   }
 
+  const settings = SettingsRepository.get()
+  const isDark =
+    settings?.system?.theme === 'dark' ||
+    (settings?.system?.theme === 'system' &&
+      process.platform === 'darwin' &&
+      require('electron').nativeTheme?.shouldUseDarkColors)
+  const initialBgColor = isDark ? '#090d16' : '#f1f5f9'
+
   mainWindow = new BrowserWindow({
     width: 1100,
     height: 740,
@@ -22,7 +30,7 @@ export function createMainWindow(): BrowserWindow {
     autoHideMenuBar: true,
     titleBarStyle: 'hiddenInset',
     trafficLightPosition: { x: 16, y: 16 },
-    backgroundColor: '#0f172a',
+    backgroundColor: initialBgColor,
     icon,
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
@@ -32,9 +40,9 @@ export function createMainWindow(): BrowserWindow {
     }
   })
 
-  mainWindow.on('ready-to-show', () => {
-    const settings = SettingsRepository.get()
-    if (!settings.system?.startMinimized) {
+  mainWindow.once('ready-to-show', () => {
+    const currentSettings = SettingsRepository.get()
+    if (!currentSettings.system?.startMinimized) {
       showMainWindow()
     }
     if (is.dev) {
@@ -43,15 +51,18 @@ export function createMainWindow(): BrowserWindow {
   })
 
   mainWindow.on('close', (event) => {
-    const settings = SettingsRepository.get()
-    const shouldCloseToTray =
-      settings.system?.closeToTray &&
-      settings.system?.showTrayIcon !== false &&
-      !(app as any).isQuitting
+    if (!(app as any).isQuitting) {
+      // macOS 上始终隐藏窗口保持渲染进程驻留以实现秒级无闪烁唤醒；Windows/Linux 根据托盘设置隐藏
+      const isDarwin = process.platform === 'darwin'
+      const currentSettings = SettingsRepository.get()
+      const shouldHide =
+        isDarwin ||
+        (currentSettings.system?.closeToTray && currentSettings.system?.showTrayIcon !== false)
 
-    if (shouldCloseToTray) {
-      event.preventDefault()
-      mainWindow?.hide()
+      if (shouldHide) {
+        event.preventDefault()
+        mainWindow?.hide()
+      }
     }
   })
 
@@ -97,23 +108,12 @@ export function showMainWindow(): BrowserWindow {
 
   if (win.isMinimized()) {
     win.restore()
-    return win
   }
 
-  if (process.platform === 'darwin') {
-    win.setVisibleOnAllWorkspaces(true)
+  if (!win.isVisible()) {
+    win.show()
   }
-
-  if (win.isFullScreen() && !win.isVisible()) {
-    win.setFullScreen(false)
-  }
-
-  win.show()
   win.focus()
-
-  if (process.platform === 'darwin') {
-    win.setVisibleOnAllWorkspaces(false)
-  }
 
   return win
 }

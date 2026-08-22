@@ -89,11 +89,9 @@ if (!gotTheLock) {
       }
     }, 3000)
 
-    app.on('activate', function (_event, hasVisibleWindows) {
-      // 仅在用户通过 Dock 点击激活且当前应用无可见主窗口时，恢复主工作台
-      if (!hasVisibleWindows) {
-        showMainWindow()
-      }
+    app.on('activate', function () {
+      // 在 macOS 上点击 Dock 图标时，确保主窗口平滑显示并聚焦
+      showMainWindow()
     })
   })
 
