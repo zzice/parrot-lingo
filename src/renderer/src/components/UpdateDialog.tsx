@@ -100,8 +100,28 @@ export const UpdateDialog: React.FC<UpdateDialogProps> = ({
             <div className="text-xs font-semibold text-slate-600 dark:text-slate-400 mb-2">
               {t('updater.releaseNotesTitle')}
             </div>
-            <div className="max-h-[220px] overflow-y-auto p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800/80 text-xs leading-relaxed text-slate-700 dark:text-slate-300 font-sans whitespace-pre-wrap">
-              {updateInfo.releaseNotes || t('updater.noReleaseNotes')}
+            <div
+              onClick={(e) => {
+                const target = (e.target as HTMLElement).closest('a')
+                if (target && target.href) {
+                  e.preventDefault()
+                  window.open(target.href, '_blank')
+                }
+              }}
+              className="max-h-[220px] overflow-y-auto p-3.5 rounded-xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/80 dark:border-slate-800/80 text-xs leading-relaxed text-slate-700 dark:text-slate-300 font-sans"
+            >
+              {updateInfo.releaseNotes ? (
+                /<[a-z][\s\S]*>/i.test(updateInfo.releaseNotes) ? (
+                  <div
+                    className="space-y-1.5 [&_a]:text-[var(--color-primary)] [&_a]:underline [&_ul]:list-disc [&_ul]:pl-4 [&_ol]:list-decimal [&_ol]:pl-4 [&_p]:mb-1 [&_strong]:font-bold [&_strong]:text-slate-900 dark:[&_strong]:text-slate-100"
+                    dangerouslySetInnerHTML={{ __html: updateInfo.releaseNotes }}
+                  />
+                ) : (
+                  <div className="whitespace-pre-wrap">{updateInfo.releaseNotes}</div>
+                )
+              ) : (
+                <div className="text-slate-400">{t('updater.noReleaseNotes')}</div>
+              )}
             </div>
           </div>
 
