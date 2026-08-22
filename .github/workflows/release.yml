@@ -29,9 +29,11 @@ jobs:
       matrix:
         include:
           - os: macos-latest
-            platform: mac
+            platform: mac-arm64
+          - os: macos-13
+            platform: mac-x64
           - os: windows-2022
-            platform: win
+            platform: win-x64
 
     steps:
       - name: Checkout Code
@@ -56,19 +58,27 @@ jobs:
       - name: Run TypeScript Type Check
         run: pnpm typecheck
 
-      - name: Build macOS Artifacts (DMG & Zip)
-        if: matrix.platform == 'mac'
+      - name: Build macOS Artifacts (Apple Silicon ARM64)
+        if: matrix.platform == 'mac-arm64'
         run: |
           pnpm exec electron-vite build
-          pnpm exec electron-builder --mac --arm64 --x64 --publish never
+          pnpm exec electron-builder --mac --arm64 --publish never
         env:
           CSC_IDENTITY_AUTO_DISCOVERY: false
 
-      - name: Build Windows Artifacts (NSIS Setup Exe)
-        if: matrix.platform == 'win'
+      - name: Build macOS Artifacts (Intel x64)
+        if: matrix.platform == 'mac-x64'
         run: |
           pnpm exec electron-vite build
-          pnpm exec electron-builder --win --x64 --arm64 --publish never
+          pnpm exec electron-builder --mac --x64 --publish never
+        env:
+          CSC_IDENTITY_AUTO_DISCOVERY: false
+
+      - name: Build Windows Artifacts (NSIS Setup Exe x64)
+        if: matrix.platform == 'win-x64'
+        run: |
+          pnpm exec electron-vite build
+          pnpm exec electron-builder --win --x64 --publish never
 
       - name: Upload Build Artifacts to Workflow
         uses: actions/upload-artifact@v4
