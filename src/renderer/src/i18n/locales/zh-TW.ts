@@ -287,20 +287,11 @@ export default {
     title: '個人生詞與語料庫',
     desc: '劃詞助手收集的單詞、例句與道地候選表達均保存在本機',
     searchPlaceholder: '搜尋詞條、釋義或例句...',
-    manualAdd: '手動錄入',
     saveToCorpus: '保存到語料庫',
     savedToCorpus: '已存入語料庫',
     alternatives: '候選道地表達推薦',
     emptyHint: '暫無匹配語料',
-    emptySubHint: '在系統任意應用中劃選單詞即可使用劃詞助手積累生詞',
-    manualModalTitle: '手動錄入新生詞/短語',
-    wordLabel: '生詞 / 短語',
-    wordPlaceholder: '例如: serendipity',
-    transLabel: '中文釋義',
-    transPlaceholder: '例如: n. 意外發現珍奇事物的本領',
-    contextLabel: '場景例句 (選填)',
-    contextPlaceholder: '例如: Finding this quiet cafe was pure serendipity.',
-    addBtn: '錄入語料庫'
+    emptySubHint: '在系統任意應用中劃選單詞即可使用劃詞助手積累生詞'
   },
   today: {
     title: '今日遇見回放',
@@ -326,7 +317,17 @@ export default {
     ratePrompt: '掌握程度自我評價（決定下次遇見時間）',
     ratingHard: '還不熟',
     ratingGood: '差不多',
-    ratingEasy: '已掌握'
+    ratingEasy: '已掌握',
+    recognizeGuide: '在腦海中回想該詞在工作場景中的釋義與用法',
+    clozeGuide: '根據工作場景語境，回想劃線空白處應填入的英文表達',
+    recallGuide: '根據釋義，回想對應的道地英文表達與拼寫',
+    ratingHardSub: '明天再來',
+    ratingGoodSub: '3 天後',
+    ratingEasySub: '7 天後',
+    contextEncounter: '真實工作場景語境',
+    alternatives: '道地替換搭配',
+    clickToRevealHint: '想好了嗎？點擊卡片或按空格 [Space] 揭曉答案',
+    replayPronunciation: '重聽發音'
   },
   reading: {
     title: '場景精讀',

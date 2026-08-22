@@ -287,20 +287,11 @@ export default {
     title: '个人生词与语料库',
     desc: '划词助手收集的单词、例句与地道候选表达均保存在本地',
     searchPlaceholder: '搜索词条、释义或例句...',
-    manualAdd: '手动录入',
     saveToCorpus: '保存到语料库',
     savedToCorpus: '已存入语料库',
     alternatives: '候选地道表达推荐',
     emptyHint: '暂无匹配语料',
-    emptySubHint: '在系统任意应用中划选单词即可使用划词助手积累生词',
-    manualModalTitle: '手动录入新生词/短语',
-    wordLabel: '生词 / 短语',
-    wordPlaceholder: '例如: serendipity',
-    transLabel: '中文释义',
-    transPlaceholder: '例如: n. 意外发现珍奇事物的本领',
-    contextLabel: '场景例句 (选填)',
-    contextPlaceholder: '例如: Finding this quiet cafe was pure serendipity.',
-    addBtn: '录入语料库'
+    emptySubHint: '在系统任意应用中划选单词即可使用划词助手积累生词'
   },
   today: {
     title: '今日遇见回放',
@@ -326,7 +317,17 @@ export default {
     ratePrompt: '掌握程度自我评价（决定下次遇见时间）',
     ratingHard: '还不熟',
     ratingGood: '差不多',
-    ratingEasy: '已掌握'
+    ratingEasy: '已掌握',
+    recognizeGuide: '在脑海中回忆该词在工作场景中的释义与用法',
+    clozeGuide: '根据工作场景语境，回想划线空白处应填入的英文表达',
+    recallGuide: '根据释义，回想对应的地道英文表达与拼写',
+    ratingHardSub: '明天再来',
+    ratingGoodSub: '3 天后',
+    ratingEasySub: '7 天后',
+    contextEncounter: '真实工作场景语境',
+    alternatives: '地道替换搭配',
+    clickToRevealHint: '想好了吗？点击卡片或按空格 [Space] 揭晓答案',
+    replayPronunciation: '重听发音'
   },
   reading: {
     title: '场景精读',

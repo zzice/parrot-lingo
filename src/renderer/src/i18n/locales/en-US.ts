@@ -292,20 +292,11 @@ export default {
     title: 'Vocabulary & Expression Corpus',
     desc: 'Collected words, sentences, and native expressions are saved locally',
     searchPlaceholder: 'Search vocabulary, definitions, or examples...',
-    manualAdd: 'Manual Entry',
     saveToCorpus: 'Save to Corpus',
     savedToCorpus: 'Saved to Corpus',
     alternatives: 'Native Alternative Expressions',
     emptyHint: 'No matching vocabulary found',
-    emptySubHint: 'Select words in any application with Selection Assistant to collect vocabulary',
-    manualModalTitle: 'Manual Entry of New Word/Phrase',
-    wordLabel: 'Word / Phrase',
-    wordPlaceholder: 'e.g. serendipity',
-    transLabel: 'Definition',
-    transPlaceholder: 'e.g. n. finding valuable things by chance',
-    contextLabel: 'Context Sentence (Optional)',
-    contextPlaceholder: 'e.g. Finding this quiet cafe was pure serendipity.',
-    addBtn: 'Save to Corpus'
+    emptySubHint: 'Select words in any application with Selection Assistant to collect vocabulary'
   },
   today: {
     title: "Today's Playback",
@@ -334,7 +325,17 @@ export default {
     ratePrompt: 'Rate your mastery level (determines next encounter interval)',
     ratingHard: 'Hard',
     ratingGood: 'Good',
-    ratingEasy: 'Mastered'
+    ratingEasy: 'Mastered',
+    recognizeGuide: 'Recall the definition and context of this expression in your workflow',
+    clozeGuide: 'Based on the context, recall the missing English word or phrase',
+    recallGuide: 'Based on the definition, recall the corresponding English expression',
+    ratingHardSub: 'Tomorrow',
+    ratingGoodSub: 'In 3 days',
+    ratingEasySub: 'In 7 days',
+    contextEncounter: 'Real Encounter Context',
+    alternatives: 'Native Alternatives',
+    clickToRevealHint: 'Ready? Click card or press [Space] to reveal answer',
+    replayPronunciation: 'Replay Audio'
   },
   reading: {
     title: 'Context Reading',

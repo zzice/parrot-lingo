@@ -287,20 +287,11 @@ export default {
     title: '단어 및 표현 어휘고',
     desc: '수집된 단어, 예문 및 원어민 표현이 로컬에 안전하게 저장됩니다',
     searchPlaceholder: '단어, 의미, 예문 검색...',
-    manualAdd: '직접 추가',
     saveToCorpus: '어휘고에 저장',
     savedToCorpus: '저장 완료',
     alternatives: '자연스러운 표현 추천',
     emptyHint: '일치하는 어휘가 없습니다',
-    emptySubHint: '임의의 앱에서 단어를 선택하여 어휘를 수집할 수 있습니다',
-    manualModalTitle: '새 단어/표현 수동 입력',
-    wordLabel: '단어 / 표현',
-    wordPlaceholder: '예: serendipity',
-    transLabel: '의미 / 해설',
-    transPlaceholder: '예: 뜻밖의 행운, 우연한 발견',
-    contextLabel: '문맥 예문 (선택 사항)',
-    contextPlaceholder: '예: Finding this quiet cafe was pure serendipity.',
-    addBtn: '어휘고에 저장'
+    emptySubHint: '임의의 앱에서 단어를 선택하여 어휘를 수집할 수 있습니다'
   },
   today: {
     title: '오늘의 리플레이',
@@ -326,7 +317,17 @@ export default {
     ratePrompt: '숙지도 자가 평가 (다음 복습 주기를 결정합니다)',
     ratingHard: '아직 낯섦',
     ratingGood: '어느 정도 기억남',
-    ratingEasy: '완전 마스터'
+    ratingEasy: '완전 마스터',
+    recognizeGuide: '업무 상황에서의 의미와 사용 맥락을 머릿속으로 떠올려 보세요',
+    clozeGuide: '문맥에 맞춰 빈칸에 들어갈 영어 표현을 떠올려 보세요',
+    recallGuide: '해설을 바탕으로 해당하는 영어 표현과 스펠링을 떠올려 보세요',
+    ratingHardSub: '내일 다시',
+    ratingGoodSub: '3일 후',
+    ratingEasySub: '7일 후',
+    contextEncounter: '실제 업무 문맥 예문',
+    alternatives: '자연스러운 표현 추천',
+    clickToRevealHint: '떠올리셨나요? 카드를 클릭하거나 [Space]를 눌러 정답 확인',
+    replayPronunciation: '발음 다시 듣기'
   },
   reading: {
     title: '컨텍스트 정독',

@@ -287,20 +287,11 @@ export default {
     title: '単語・表現コーパス',
     desc: '収集した単語、例文、ネイティブ表現はローカルに保存されます',
     searchPlaceholder: '単語、定義、例文を検索...',
-    manualAdd: '手動追加',
     saveToCorpus: '語彙庫に保存',
     savedToCorpus: '保存済み',
     alternatives: 'ネイティブ表現の提案',
     emptyHint: '一致する語彙が見つかりません',
-    emptySubHint: '任意のアプリで単語を選択して語彙を蓄積できます',
-    manualModalTitle: '単語・フレーズの手動追加',
-    wordLabel: '単語 / フレーズ',
-    wordPlaceholder: '例: serendipity',
-    transLabel: '意味・解説',
-    transPlaceholder: '例: 偶然に幸運な発見をする能力',
-    contextLabel: '例文 (任意)',
-    contextPlaceholder: '例: Finding this quiet cafe was pure serendipity.',
-    addBtn: '語彙庫に追加'
+    emptySubHint: '任意のアプリで単語を選択して語彙を蓄積できます'
   },
   today: {
     title: '今日のプレイバック',
@@ -327,7 +318,17 @@ export default {
     ratePrompt: '定着度の自己評価（次回の配信間隔を決定します）',
     ratingHard: 'まだ不安',
     ratingGood: 'まあまあ',
-    ratingEasy: '習得済み'
+    ratingEasy: '習得済み',
+    recognizeGuide: '仕事の場面での意味や文脈を思い浮かべてみましょう',
+    clozeGuide: '文脈に合わせて、下線部分に入る英語表現を思い出しましょう',
+    recallGuide: '日本語の意味から、対応する英語表現を思い出しましょう',
+    ratingHardSub: '明日再復習',
+    ratingGoodSub: '3日後',
+    ratingEasySub: '7日後',
+    contextEncounter: '実際のコンテキスト例文',
+    alternatives: 'ネイティブ表現の提案',
+    clickToRevealHint: '思い浮かびましたか？カードをクリックまたは [Space] で答えを表示',
+    replayPronunciation: '発音を再聴'
   },
   reading: {
     title: 'コンテキスト精読',

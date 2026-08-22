@@ -6,7 +6,6 @@ import {
   Trash2,
   Copy,
   Check,
-  Plus,
   Sparkles,
   Layers,
   Flame,
@@ -29,15 +28,10 @@ export const CorpusView: React.FC = () => {
     corpusSearch,
     isCorpusLoading,
     setCorpusSearch,
-    deleteCorpusItem,
-    addCorpusItem
+    deleteCorpusItem
   } = useAppStore()
   const { t } = useTranslation()
   const [copiedId, setCopiedId] = useState<string | null>(null)
-  const [showAddModal, setShowAddModal] = useState(false)
-  const [newWord, setNewWord] = useState('')
-  const [newTrans, setNewTrans] = useState('')
-  const [newContext, setNewContext] = useState('')
 
   // 遇见足迹展开与数据缓存状态
   const [expandedFootprints, setExpandedFootprints] = useState<Record<string, boolean>>({})
@@ -155,23 +149,6 @@ export const CorpusView: React.FC = () => {
     setTimeout(() => setCopiedId(null), 1800)
   }, [])
 
-  const handleCreate = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!newWord.trim()) return
-    await addCorpusItem({
-      text: newWord.trim(),
-      canonical: newWord.trim().toLowerCase(),
-      translation: newTrans.trim() || 'Custom vocabulary',
-      nativeExample: newContext.trim() || undefined,
-      alternativeExpressions: [],
-      tags: ['手动录入', '语料']
-    })
-    setNewWord('')
-    setNewTrans('')
-    setNewContext('')
-    setShowAddModal(false)
-  }
-
   // 切换展开/收起遇见历史足迹
   const toggleFootprints = useCallback(
     async (corpusItemId: string) => {
@@ -209,7 +186,6 @@ export const CorpusView: React.FC = () => {
         </div>
         <div className="flex items-center space-x-3">
           <div className="w-64 h-9 bg-slate-200 dark:bg-slate-800 rounded-xl" />
-          <div className="w-24 h-9 bg-slate-200 dark:bg-slate-800 rounded-xl" />
         </div>
       </div>
 
@@ -295,18 +271,6 @@ export const CorpusView: React.FC = () => {
               className="w-full bg-white dark:bg-slate-800/90 border border-slate-200/80 dark:border-slate-700/80 rounded-xl pl-8 pr-3 py-2 text-xs text-slate-800 dark:text-slate-200 placeholder-slate-400 focus:outline-none focus:border-[var(--color-primary)] transition-colors shadow-2xs"
             />
           </div>
-
-          <button
-            onClick={() => setShowAddModal(true)}
-            style={{
-              backgroundColor: 'var(--color-primary)',
-              color: 'var(--color-primary-foreground)'
-            }}
-            className="px-3.5 py-2 hover:opacity-90 active:scale-95 rounded-xl text-xs font-bold flex items-center space-x-1.5 shadow-2xs transition-all cursor-pointer"
-          >
-            <Plus className="w-4 h-4" />
-            <span>{t('corpus.manualAdd') || '录入词条'}</span>
-          </button>
         </div>
       </div>
 
@@ -738,82 +702,6 @@ export const CorpusView: React.FC = () => {
           </div>
         )}
       </div>
-
-      {/* 手动添加生词弹窗 */}
-      {showAddModal && (
-        <div className="fixed inset-0 bg-black/50 backdrop-blur-xs z-50 flex items-center justify-center p-4">
-          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-3xl p-6 w-full max-w-md space-y-4 shadow-2xl">
-            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
-              {t('corpus.manualModalTitle') || '录入新词 / 表达'}
-            </h3>
-            <form onSubmit={handleCreate} className="space-y-3.5 text-xs">
-              <div>
-                <label className="block text-slate-600 dark:text-slate-400 mb-1 font-medium">
-                  {t('corpus.wordLabel') || '单词 / 表达'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newWord}
-                  onChange={(e) => setNewWord(e.target.value)}
-                  placeholder={t('corpus.wordPlaceholder') || '例如: serendipity'}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--color-primary)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-600 dark:text-slate-400 mb-1 font-medium">
-                  {t('corpus.transLabel') || '释义 / 含义'}
-                </label>
-                <input
-                  type="text"
-                  required
-                  value={newTrans}
-                  onChange={(e) => setNewTrans(e.target.value)}
-                  placeholder={t('corpus.transPlaceholder') || '例如: n. 意外发现珍奇事物的本领'}
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--color-primary)]"
-                />
-              </div>
-
-              <div>
-                <label className="block text-slate-600 dark:text-slate-400 mb-1 font-medium">
-                  {t('corpus.contextLabel') || '语境例句 (可选)'}
-                </label>
-                <textarea
-                  rows={2}
-                  value={newContext}
-                  onChange={(e) => setNewContext(e.target.value)}
-                  placeholder={
-                    t('corpus.contextPlaceholder') ||
-                    '例如: Finding this cafe was pure serendipity.'
-                  }
-                  className="w-full bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-700 rounded-xl p-2.5 text-slate-800 dark:text-slate-200 focus:outline-none focus:border-[var(--color-primary)]"
-                />
-              </div>
-
-              <div className="flex items-center justify-end space-x-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setShowAddModal(false)}
-                  className="px-4 py-2 rounded-xl text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors cursor-pointer font-medium"
-                >
-                  {t('common.cancel') || '取消'}
-                </button>
-                <button
-                  type="submit"
-                  style={{
-                    backgroundColor: 'var(--color-primary)',
-                    color: 'var(--color-primary-foreground)'
-                  }}
-                  className="px-5 py-2 rounded-xl font-bold hover:opacity-90 shadow-2xs transition-all cursor-pointer"
-                >
-                  {t('corpus.addBtn') || '保存'}
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
     </div>
   )
 }
