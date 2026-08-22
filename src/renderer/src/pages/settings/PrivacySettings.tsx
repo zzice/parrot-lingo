@@ -3,7 +3,6 @@ import {
   Database,
   Download,
   Upload,
-  CheckCircle2,
   FolderOpen,
   Copy,
   BookOpen,
@@ -27,7 +26,8 @@ interface StorageStats {
 }
 
 export const PrivacySettings: React.FC = () => {
-  const { settings, corpusList, clearCorpus, importCorpus, resetSettings } = useAppStore()
+  const { settings, corpusList, clearCorpus, importCorpus, resetSettings, showToast } =
+    useAppStore()
   const { t } = useTranslation()
   const fileInputRef = useRef<HTMLInputElement>(null)
 
@@ -39,18 +39,10 @@ export const PrivacySettings: React.FC = () => {
     reviewsCount: 0
   })
 
-  const [feedback, setFeedback] = useState<{ type: 'success' | 'error'; message: string } | null>(
-    null
-  )
   const [copied, setCopied] = useState(false)
   const [showClearConfirm, setShowClearConfirm] = useState(false)
   const [showResetConfirm, setShowResetConfirm] = useState(false)
   const [isProcessing, setIsProcessing] = useState(false)
-
-  const showNotification = (message: string, type: 'success' | 'error' = 'success') => {
-    setFeedback({ type, message })
-    setTimeout(() => setFeedback(null), 3500)
-  }
 
   const loadStorageStats = async () => {
     if (window.api?.system?.getStorageStats) {
@@ -79,7 +71,7 @@ export const PrivacySettings: React.FC = () => {
     if (window.api?.system?.openPath) {
       const ok = await window.api.system.openPath(stats.dbPath)
       if (!ok) {
-        showNotification(t('privacySettings.openFolderFailed') || '无法打开文件夹', 'error')
+        showToast(t('privacySettings.openFolderFailed') || '无法打开文件夹', 'error')
       }
     }
   }
@@ -102,9 +94,9 @@ export const PrivacySettings: React.FC = () => {
       document.body.appendChild(downloadAnchor)
       downloadAnchor.click()
       downloadAnchor.remove()
-      showNotification(t('privacySettings.jsonExportSuccess') || 'JSON 语料导出成功')
+      showToast(t('privacySettings.jsonExportSuccess') || 'JSON 语料导出成功', 'success')
     } catch {
-      showNotification(t('privacySettings.exportFailed') || '导出失败', 'error')
+      showToast(t('privacySettings.exportFailed') || '导出失败', 'error')
     }
   }
 
@@ -132,11 +124,12 @@ export const PrivacySettings: React.FC = () => {
       document.body.appendChild(downloadAnchor)
       downloadAnchor.click()
       downloadAnchor.remove()
-      showNotification(
-        t('privacySettings.csvExportSuccess') || 'CSV 语料导出成功 (兼容 Excel & Anki)'
+      showToast(
+        t('privacySettings.csvExportSuccess') || 'CSV 语料导出成功 (兼容 Excel & Anki)',
+        'success'
       )
     } catch {
-      showNotification(t('privacySettings.exportFailed') || '导出失败', 'error')
+      showToast(t('privacySettings.exportFailed') || '导出失败', 'error')
     }
   }
 
@@ -153,11 +146,12 @@ export const PrivacySettings: React.FC = () => {
       }
       const count = await importCorpus(parsed)
       await loadStorageStats()
-      showNotification(
-        t('privacySettings.importSuccess', { count }) || `成功导入 ${count} 个生词词条`
+      showToast(
+        t('privacySettings.importSuccess', { count }) || `成功导入 ${count} 个生词词条`,
+        'success'
       )
     } catch (err: any) {
-      showNotification(
+      showToast(
         err.message || t('privacySettings.importError') || '导入失败，请检查 JSON 格式',
         'error'
       )
@@ -175,9 +169,9 @@ export const PrivacySettings: React.FC = () => {
       await clearCorpus()
       await loadStorageStats()
       setShowClearConfirm(false)
-      showNotification(t('privacySettings.clearCorpusSuccess') || '生词与语料库已成功清空')
+      showToast(t('privacySettings.clearCorpusSuccess') || '生词与语料库已成功清空', 'success')
     } catch {
-      showNotification(t('privacySettings.actionFailed') || '操作失败', 'error')
+      showToast(t('privacySettings.actionFailed') || '操作失败', 'error')
     } finally {
       setIsProcessing(false)
     }
@@ -188,9 +182,9 @@ export const PrivacySettings: React.FC = () => {
     try {
       await resetSettings()
       setShowResetConfirm(false)
-      showNotification(t('privacySettings.resetSettingsSuccess') || '应用设置已恢复默认')
+      showToast(t('privacySettings.resetSettingsSuccess') || '应用设置已恢复默认', 'success')
     } catch {
-      showNotification(t('privacySettings.actionFailed') || '操作失败', 'error')
+      showToast(t('privacySettings.actionFailed') || '操作失败', 'error')
     } finally {
       setIsProcessing(false)
     }
@@ -198,24 +192,6 @@ export const PrivacySettings: React.FC = () => {
 
   return (
     <div className="flex-1 h-full overflow-y-auto p-6 space-y-5 select-none">
-      {/* 消息反馈通知 */}
-      {feedback && (
-        <div
-          className={`p-3 rounded-xl border text-xs flex items-center space-x-2 transition-all shadow-2xs ${
-            feedback.type === 'success'
-              ? 'border-emerald-500/30 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400'
-              : 'border-rose-500/30 bg-rose-500/10 text-rose-600 dark:text-rose-400'
-          }`}
-        >
-          {feedback.type === 'success' ? (
-            <CheckCircle2 className="w-4 h-4 shrink-0" />
-          ) : (
-            <AlertTriangle className="w-4 h-4 shrink-0" />
-          )}
-          <span className="font-medium">{feedback.message}</span>
-        </div>
-      )}
-
       {/* 1. 本地数据库与存储架构状态 */}
       <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
         <div className="flex items-center justify-between">

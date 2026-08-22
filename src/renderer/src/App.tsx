@@ -12,6 +12,7 @@ import { SelectionPopup } from './pages/selection/SelectionPopup'
 import { SelectionToolbar } from './pages/selection/SelectionToolbar'
 import { AccessibilityModal } from './components/AccessibilityModal'
 import { UpdateDialog } from './components/UpdateDialog'
+import { Toast } from './components/ui/Toast'
 
 interface Props {
   children: ReactNode
@@ -193,6 +194,8 @@ export const App: React.FC = () => {
           onInstall={installUpdate}
           onCancelDownload={cancelDownloadUpdate}
         />
+        {/* 全局浮动 Toast 消息提示 */}
+        <Toast />
       </div>
     </ErrorBoundary>
   )

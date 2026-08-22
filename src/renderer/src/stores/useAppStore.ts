@@ -17,7 +17,17 @@ export type NavKey = 'today' | 'corpus' | 'reading' | 'notebook' | 'settings'
 export type SettingsTab =
   'general' | 'appearance' | 'model' | 'defaultModel' | 'selection' | 'privacy' | 'about'
 
+export interface ToastItem {
+  id: number
+  message: string
+  type: 'success' | 'error' | 'info'
+}
+
 export interface AppState {
+  toast: ToastItem | null
+  showToast: (message: string, type?: 'success' | 'error' | 'info', duration?: number) => void
+  hideToast: () => void
+
   currentNav: NavKey
   previousNav: NavKey
   setCurrentNav: (nav: NavKey) => void
@@ -107,8 +117,23 @@ const applyThemeToDOM = (theme: ThemeMode) => {
 }
 
 let isStoreInitialized = false
+let toastTimer: ReturnType<typeof setTimeout> | null = null
 
 export const useAppStore = create<AppState>((set, get) => ({
+  toast: null,
+  showToast: (message, type = 'success', duration = 2800) => {
+    if (toastTimer) clearTimeout(toastTimer)
+    const id = Date.now()
+    set({ toast: { id, message, type } })
+    toastTimer = setTimeout(() => {
+      set((s) => (s.toast?.id === id ? { toast: null } : s))
+    }, duration)
+  },
+  hideToast: () => {
+    if (toastTimer) clearTimeout(toastTimer)
+    set({ toast: null })
+  },
+
   currentNav: 'today',
   previousNav: 'today',
   setCurrentNav: (nav) => set({ currentNav: nav }),
