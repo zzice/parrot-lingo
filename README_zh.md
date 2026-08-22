@@ -198,6 +198,7 @@ ParrotLingo 配置了完整的 CI/CD 自动发布与客户端静默增量更新�
 
 ParrotLingo 的开发受益于开源社区的优秀灵感与开源项目：
 
+- **[selection-hook](https://github.com/0xfullex/selection-hook)** — 优秀的跨平台全局文本划选监听与屏幕坐标定位开源库，为系统的毫秒级划词响应提供了底层技术支撑。
 - **[Cherry Studio](https://github.com/CherryHQ/cherry-studio)** — 极其出色的多模型 AI 桌面客户端，向其卓越的产品体验设计与开源贡献致敬。
 - **[Electron Vite](https://electron-vite.org)** — 新一代极速 Electron 桌面开发工具链。
 - **[Radix UI](https://www.radix-ui.com/)** & **[Tailwind CSS](https://tailwindcss.com/)** — 无障碍设计系统与现代响应式原子化 CSS 框架。

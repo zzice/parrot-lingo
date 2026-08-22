@@ -186,6 +186,7 @@ Contributions, issues, and feature suggestions are warmly welcomed!
 
 ParrotLingo is built upon and inspired by the remarkable open-source community:
 
+- **[selection-hook](https://github.com/0xfullex/selection-hook)** — A lightweight, cross-platform library for global text selection listening and screen coordinate positioning.
 - **[Cherry Studio](https://github.com/CherryHQ/cherry-studio)** — A world-class desktop client for multi-model AI workflows. Huge gratitude for their exceptional UX concepts and community contributions.
 - **[Electron Vite](https://electron-vite.org)** — Next-generation Electron development tooling.
 - **[Radix UI](https://www.radix-ui.com/)** & **[Tailwind CSS](https://tailwindcss.com/)** — Unstyled, accessible UI components and modern styling system.
