@@ -40,7 +40,7 @@
   </p>
 
   <p align="center">
-    <img src="./docs/images/today-overview.png" alt="ParrotLingo Workbench - Today's Replay Overview" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+    <img src="./docs/images/hero-product.png" alt="ParrotLingo - AI Selection Assistant & Spaced Review Workbench" width="880" style="border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
   </p>
 
 </div>

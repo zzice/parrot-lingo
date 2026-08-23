@@ -40,7 +40,7 @@
   </p>
 
   <p align="center">
-    <img src="./docs/images/today-overview.png" alt="ParrotLingo 主工作台 - 今日遇见回放概览" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+    <img src="./docs/images/hero-product.png" alt="ParrotLingo - AI 划词助手与沉浸式遇见回放工作台" width="880" style="border-radius: 14px; box-shadow: 0 12px 40px rgba(0,0,0,0.12);" />
   </p>
 
 </div>
