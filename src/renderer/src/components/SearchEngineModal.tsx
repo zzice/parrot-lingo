@@ -77,9 +77,13 @@ export const SearchEngineModal: React.FC<SearchEngineModalProps> = ({
     }
   }, [open, engine, customName, customUrl])
 
-  const handleTest = () => {
+  const handleTest = async () => {
     const url = buildSearchUrl('custom', 'test', localCustomUrl)
-    window.open(url, '_blank')
+    if (window.api?.system?.openExternal) {
+      await window.api.system.openExternal(url)
+    } else {
+      window.open(url, '_blank')
+    }
   }
 
   const handleConfirm = () => {

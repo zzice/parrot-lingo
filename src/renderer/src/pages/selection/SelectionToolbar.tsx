@@ -121,7 +121,11 @@ export const SelectionToolbar: React.FC = () => {
       const engine = (settings?.selection?.searchEngine || 'google') as SearchEngineType
       const customUrl = settings?.selection?.customSearchEngineUrl
       const searchUrl = buildSearchUrl(engine, selectedText, customUrl)
-      window.open(searchUrl, '_blank')
+      if (window.api?.system?.openExternal) {
+        await window.api.system.openExternal(searchUrl)
+      } else {
+        window.open(searchUrl, '_blank')
+      }
       if (window.api?.selection) {
         window.api.selection.hideToolbar()
       }

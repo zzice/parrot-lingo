@@ -70,6 +70,13 @@ export function createToolbarWindow(): BrowserWindow {
     }
   })
 
+  // 拦截全部 window.open，强制调用系统默认外部浏览器打开（防止在应用内部弹出 Electron 窗口）
+  const { shell } = require('electron')
+  toolbarWindow.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url)
+    return { action: 'deny' }
+  })
+
   // macOS：应用原生 quirks 焦点保护 (macRestoreFocusOnHide & reapplyAlwaysOnTop)
   applyWindowQuirks(
     toolbarWindow,

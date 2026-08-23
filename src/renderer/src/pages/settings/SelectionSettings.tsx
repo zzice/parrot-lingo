@@ -5,7 +5,6 @@ import {
   Search,
   Copy,
   Check,
-  Sparkles,
   Layers,
   Keyboard,
   RotateCcw,
@@ -135,8 +134,8 @@ export const SelectionSettings: React.FC = () => {
         }}
       />
 
-      {/* 卡片 1: 基础启用与工具栏预览 */}
-      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs space-y-4">
+      {/* 卡片 1: 基础启用 */}
+      <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs">
         <div className="flex items-center justify-between">
           <div className="space-y-0.5">
             <div className="text-sm font-semibold text-slate-800 dark:text-slate-100">
@@ -148,15 +147,17 @@ export const SelectionSettings: React.FC = () => {
           </div>
           <Switch checked={selection.enabled} onCheckedChange={handleToggleEnable} />
         </div>
+      </div>
 
-        {/* 预览工具栏 */}
-        {selection.enabled && (
-          <div className="pt-3 border-t border-slate-100 dark:border-slate-800/40 space-y-2">
-            <div className="flex items-center justify-between text-xs font-medium text-slate-700 dark:text-slate-300">
-              <div className="flex items-center space-x-1.5">
-                <Sparkles className="w-3.5 h-3.5" style={{ color: 'var(--color-primary)' }} />
-                <span>{t('selectionSettings.previewToolbar')}</span>
-              </div>
+      {/* 仅在划词助手启用时显示下方全部设置 */}
+      {selection.enabled && (
+        <>
+          {/* 卡片: 功能列表 (内置 翻译、搜索、复制 + 顶部工具栏预览) */}
+          <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs space-y-4">
+            <div className="flex items-center justify-between border-b border-slate-100 dark:border-slate-800/60 pb-3">
+              <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100">
+                {t('selectionSettings.functionsTitle') || '功能'}
+              </h2>
               <span className="text-[11px] text-slate-400 dark:text-slate-500">
                 {selection.compactMode
                   ? t('selectionSettings.compactModeLabel')
@@ -165,7 +166,7 @@ export const SelectionSettings: React.FC = () => {
             </div>
 
             {/* 胶囊工具栏浮动预览条 (1:1 还原真实悬浮工具栏) */}
-            <div className="p-4 rounded-xl bg-slate-50 dark:bg-slate-950/60 flex items-center justify-center border border-slate-200/60 dark:border-slate-800/40">
+            <div className="py-5 px-4 rounded-xl bg-slate-50/80 dark:bg-slate-950/40 flex items-center justify-center border border-slate-100 dark:border-slate-800/60">
               <div className="inline-flex items-stretch h-[36px] rounded-[10px] bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700/80 shadow-md overflow-hidden select-none">
                 {/* 左侧 Logo 标识 */}
                 <div className="flex items-center justify-center pl-2.5 pr-2">
@@ -217,20 +218,9 @@ export const SelectionSettings: React.FC = () => {
                 </button>
               </div>
             </div>
-          </div>
-        )}
-      </div>
 
-      {/* 仅在划词助手启用时显示下方全部设置 */}
-      {selection.enabled && (
-        <>
-          {/* 卡片: 功能列表 (内置 翻译、搜索、复制) */}
-          <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs space-y-3.5">
-            <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
-              {t('selectionSettings.functionsTitle') || '功能'}
-            </h2>
-
-            <div className="space-y-2.5">
+            {/* 功能项列表 */}
+            <div className="space-y-2.5 pt-1">
               {/* 1. 翻译 */}
               <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
                 <div className="flex items-center space-x-3">

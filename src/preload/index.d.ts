@@ -79,6 +79,7 @@ declare global {
         checkAccessibility: (prompt?: boolean) => Promise<boolean>
         requestAccessibilityTrust: () => Promise<boolean>
         openAccessibilitySettings: () => Promise<boolean>
+        openExternal: (url: string) => Promise<boolean>
         testProxy: (testUrl?: string) => Promise<TestProxyResult>
         openPath: (targetPath?: string) => Promise<boolean>
         getStorageStats: () => Promise<{

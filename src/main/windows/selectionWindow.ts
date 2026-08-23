@@ -67,6 +67,13 @@ export function createSelectionWindow(): BrowserWindow {
     win.loadFile(join(__dirname, '../renderer/selection.html'))
   }
 
+  // 拦截全部 window.open，强制调用系统默认外部浏览器打开（防止在应用内部弹出 Electron 窗口）
+  const { shell } = require('electron')
+  win.webContents.setWindowOpenHandler((details) => {
+    shell.openExternal(details.url)
+    return { action: 'deny' }
+  })
+
   const webContentsId = win.webContents.id
 
   // 记录窗口大小（当开启记住大小时）

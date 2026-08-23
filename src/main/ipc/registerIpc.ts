@@ -287,6 +287,15 @@ export function registerIpcHandlers() {
     return true
   })
 
+  /** 调用系统默认浏览器打开外部链接 */
+  ipcMain.handle('system:openExternal', async (_, url: string) => {
+    if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:'))) {
+      await shell.openExternal(url)
+      return true
+    }
+    return false
+  })
+
   /** 测试网络代理连接 */
   ipcMain.handle('system:testProxy', async (_, testUrl?: string) => {
     return ProxyService.testProxy(testUrl)

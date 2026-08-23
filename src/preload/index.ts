@@ -80,6 +80,7 @@ const api = {
       ipcRenderer.invoke('system:requestAccessibilityTrust'),
     openAccessibilitySettings: (): Promise<boolean> =>
       ipcRenderer.invoke('system:openAccessibilitySettings'),
+    openExternal: (url: string): Promise<boolean> => ipcRenderer.invoke('system:openExternal', url),
     testProxy: (testUrl?: string): Promise<any> => ipcRenderer.invoke('system:testProxy', testUrl),
     openPath: (targetPath?: string): Promise<boolean> =>
       ipcRenderer.invoke('system:openPath', targetPath),
