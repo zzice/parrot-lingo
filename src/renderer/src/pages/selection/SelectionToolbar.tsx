@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react'
-import { Languages, Copy, Check } from 'lucide-react'
+import { Languages, Search, Copy, Check } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useAppStore } from '../../stores/useAppStore'
 import logoImg from '../../assets/logo.png'
 import { applyThemeColorToDOM } from '../../utils/theme'
 import i18n, { resolveLanguage } from '../../i18n'
+import { buildSearchUrl, SearchEngineType } from '../../utils/searchEngine'
 
 export const SelectionToolbar: React.FC = () => {
   const { t } = useTranslation()
@@ -15,6 +16,7 @@ export const SelectionToolbar: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null)
 
   const isCompact = Boolean(settings?.selection?.compactMode)
+  const showSearch = settings?.selection?.showSearch !== false
 
   // 初始加载设置
   useEffect(() => {
@@ -61,7 +63,7 @@ export const SelectionToolbar: React.FC = () => {
 
   useEffect(() => {
     reportSize()
-  }, [reportSize, isCompact, selectedText])
+  }, [reportSize, isCompact, showSearch, selectedText])
 
   // 监听选中文本事件 (支持 selection.text_selected 与 toolbar:show)
   useEffect(() => {
@@ -96,7 +98,7 @@ export const SelectionToolbar: React.FC = () => {
     return undefined
   }, [reportSize])
 
-  const handleAction = async (action: 'translate' | 'copy') => {
+  const handleAction = async (action: 'translate' | 'search' | 'copy') => {
     if (!selectedText) return
 
     if (action === 'copy') {
@@ -112,6 +114,17 @@ export const SelectionToolbar: React.FC = () => {
           window.api.selection.hideToolbar()
         }
       }, 800)
+      return
+    }
+
+    if (action === 'search') {
+      const engine = (settings?.selection?.searchEngine || 'google') as SearchEngineType
+      const customUrl = settings?.selection?.customSearchEngineUrl
+      const searchUrl = buildSearchUrl(engine, selectedText, customUrl)
+      window.open(searchUrl, '_blank')
+      if (window.api?.selection) {
+        window.api.selection.hideToolbar()
+      }
       return
     }
 
@@ -134,7 +147,7 @@ export const SelectionToolbar: React.FC = () => {
 
         <div className="toolbar-divider" />
 
-        {/* 操作按钮组 (翻译、复制) */}
+        {/* 操作按钮组 (翻译、搜索、复制) */}
         <div className="toolbar-actions">
           {/* 翻译 */}
           <button
@@ -148,6 +161,21 @@ export const SelectionToolbar: React.FC = () => {
             <Languages />
             {!isCompact && <span>{t('selectionSettings.actionTranslate') || '翻译'}</span>}
           </button>
+
+          {/* 搜索 */}
+          {showSearch && (
+            <button
+              type="button"
+              tabIndex={-1}
+              onMouseDown={(e) => e.preventDefault()}
+              onClick={() => handleAction('search')}
+              title={isCompact ? t('selectionSettings.actionSearch') || '搜索' : undefined}
+              className="toolbar-btn"
+            >
+              <Search />
+              {!isCompact && <span>{t('selectionSettings.actionSearch') || '搜索'}</span>}
+            </button>
+          )}
 
           {/* 复制 */}
           <button

@@ -8,6 +8,7 @@ export default {
     close: '關閉',
     save: '保存',
     cancel: '取消',
+    confirm: '確認',
     reset: '重置',
     add: '添加',
     delete: '刪除',
@@ -134,7 +135,19 @@ export default {
     actionExplain: '解釋',
     actionSummarize: '總結',
     actionSearch: '搜尋',
-    actionCopy: '複製'
+    actionCopy: '複製',
+    functionsTitle: '功能',
+    alwaysEnabled: '常駐'
+  },
+  searchEngine: {
+    modalTitle: '設定搜尋引擎',
+    label: '搜尋引擎',
+    selectPlaceholder: '請選擇搜尋引擎',
+    custom: '自訂',
+    customName: '自訂名稱',
+    customNamePlaceholder: '請輸入搜尋引擎名稱',
+    customUrl: '自訂搜尋 URL',
+    test: '測試'
   },
   appearanceSettings: {
     title: '外觀與語言',

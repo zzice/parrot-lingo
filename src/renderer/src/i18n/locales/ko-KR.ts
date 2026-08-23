@@ -8,6 +8,7 @@ export default {
     close: '닫기',
     save: '저장',
     cancel: '취소',
+    confirm: '확인',
     reset: '초기화',
     add: '추가',
     delete: '삭제',
@@ -135,7 +136,19 @@ export default {
     actionExplain: '해설',
     actionSummarize: '요약',
     actionSearch: '검색',
-    actionCopy: '복사'
+    actionCopy: '복사',
+    functionsTitle: '기능',
+    alwaysEnabled: '상주'
+  },
+  searchEngine: {
+    modalTitle: '검색 엔진 설정',
+    label: '검색 엔진',
+    selectPlaceholder: '검색 엔진 선택',
+    custom: '사용자 정의',
+    customName: '사용자 정의 이름',
+    customNamePlaceholder: '검색 엔진 이름 입력',
+    customUrl: '사용자 정의 검색 URL',
+    test: '테스트'
   },
   appearanceSettings: {
     title: '테마 및 언어',

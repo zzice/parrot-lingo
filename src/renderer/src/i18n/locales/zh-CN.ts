@@ -8,6 +8,7 @@ export default {
     close: '关闭',
     save: '保存',
     cancel: '取消',
+    confirm: '确认',
     reset: '重置',
     add: '添加',
     delete: '删除',
@@ -134,7 +135,19 @@ export default {
     actionExplain: '解释',
     actionSummarize: '总结',
     actionSearch: '搜索',
-    actionCopy: '复制'
+    actionCopy: '复制',
+    functionsTitle: '功能',
+    alwaysEnabled: '常驻'
+  },
+  searchEngine: {
+    modalTitle: '设置搜索引擎',
+    label: '搜索引擎',
+    selectPlaceholder: '请选择搜索引擎',
+    custom: '自定义',
+    customName: '自定义名称',
+    customNamePlaceholder: '请输入搜索引擎名称',
+    customUrl: '自定义搜索 URL',
+    test: '测试'
   },
   appearanceSettings: {
     title: '外观与语言',

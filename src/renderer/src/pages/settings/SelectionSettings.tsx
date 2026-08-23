@@ -2,12 +2,14 @@ import React, { useState, useEffect } from 'react'
 import {
   HelpCircle,
   Languages,
+  Search,
   Copy,
   Check,
   Sparkles,
   Layers,
   Keyboard,
-  RotateCcw
+  RotateCcw,
+  SlidersHorizontal
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { clsx } from 'clsx'
@@ -24,6 +26,7 @@ import {
   SelectValue
 } from '../../components/ui/select'
 import { AccessibilityModal } from '../../components/AccessibilityModal'
+import { SearchEngineModal } from '../../components/SearchEngineModal'
 import { getShortcutFromKeyboardEvent, formatShortcutKeys } from '../../utils/shortcut'
 import logoImg from '../../assets/logo.png'
 
@@ -31,6 +34,7 @@ export const SelectionSettings: React.FC = () => {
   const { settings, updateSettings } = useAppStore()
   const { t } = useTranslation()
   const [showPermissionModal, setShowPermissionModal] = useState(false)
+  const [showSearchEngineModal, setShowSearchEngineModal] = useState(false)
   const [isRecordingShortcut, setIsRecordingShortcut] = useState(false)
 
   const handleShortcutKeyDown = (e: React.KeyboardEvent<HTMLButtonElement>) => {
@@ -102,6 +106,17 @@ export const SelectionSettings: React.FC = () => {
   const handleCopyClick = () => {
     setCopied(true)
     setTimeout(() => setCopied(false), 1200)
+  }
+
+  const getEngineDisplayName = () => {
+    const engine = selection.searchEngine || 'google'
+    if (engine === 'google') return 'Google'
+    if (engine === 'baidu') return 'Baidu (百度)'
+    if (engine === 'bing') return 'Bing (必应)'
+    if (engine === 'custom') {
+      return selection.customSearchEngineName || t('searchEngine.custom') || '自定义'
+    }
+    return 'Google'
   }
 
   return (
@@ -176,6 +191,17 @@ export const SelectionSettings: React.FC = () => {
                   {!selection.compactMode && <span>{t('selectionSettings.actionTranslate')}</span>}
                 </button>
 
+                {/* 搜索 */}
+                {selection.showSearch !== false && (
+                  <button
+                    type="button"
+                    className="group inline-flex items-center gap-1.5 px-3 h-full text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium cursor-pointer transition-colors"
+                  >
+                    <Search className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
+                    {!selection.compactMode && <span>{t('selectionSettings.actionSearch')}</span>}
+                  </button>
+                )}
+
                 {/* 复制 */}
                 <button
                   type="button"
@@ -198,6 +224,91 @@ export const SelectionSettings: React.FC = () => {
       {/* 仅在划词助手启用时显示下方全部设置 */}
       {selection.enabled && (
         <>
+          {/* 卡片: 功能列表 (内置 翻译、搜索、复制) */}
+          <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs space-y-3.5">
+            <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+              {t('selectionSettings.functionsTitle') || '功能'}
+            </h2>
+
+            <div className="space-y-2.5">
+              {/* 1. 翻译 */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shadow-2xs">
+                    <Languages className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                      {t('selectionSettings.actionTranslate') || '翻译'}
+                    </div>
+                    <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                      {t('defaultModelSettings.globalModelDesc') || '即时划词翻译与深度单词解析'}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500 px-2 py-0.5 bg-slate-200/60 dark:bg-slate-700/60 rounded-md select-none">
+                  {t('selectionSettings.alwaysEnabled') || '常驻'}
+                </div>
+              </div>
+
+              {/* 2. 搜索 */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shadow-2xs">
+                    <Search className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                      {t('selectionSettings.actionSearch') || '搜索'}
+                    </div>
+                    <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                      {t('searchEngine.label') || '搜索引擎'}
+                    </div>
+                  </div>
+                </div>
+
+                <div className="flex items-center space-x-3">
+                  {/* 搜索引擎配置 Badge 按钮 */}
+                  <button
+                    type="button"
+                    tabIndex={-1}
+                    onClick={() => setShowSearchEngineModal(true)}
+                    className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 hover:border-slate-300 dark:hover:border-slate-600 text-xs text-slate-700 dark:text-slate-200 shadow-2xs cursor-pointer transition-all focus:outline-none"
+                  >
+                    <span className="font-medium">{getEngineDisplayName()}</span>
+                    <SlidersHorizontal className="w-3.5 h-3.5 text-slate-400 ml-0.5" />
+                  </button>
+
+                  {/* 显示/隐藏开关 */}
+                  <Switch
+                    checked={selection.showSearch !== false}
+                    onCheckedChange={(checked) => handleUpdate({ showSearch: checked })}
+                  />
+                </div>
+              </div>
+
+              {/* 3. 复制 */}
+              <div className="flex items-center justify-between p-3 rounded-xl bg-slate-50/70 dark:bg-slate-800/40 border border-slate-200/60 dark:border-slate-700/60">
+                <div className="flex items-center space-x-3">
+                  <div className="w-8 h-8 rounded-lg bg-white dark:bg-slate-800 border border-slate-200 dark:border-slate-700 flex items-center justify-center shadow-2xs">
+                    <Copy className="w-4 h-4 text-slate-600 dark:text-slate-300" />
+                  </div>
+                  <div>
+                    <div className="text-xs font-semibold text-slate-800 dark:text-slate-100">
+                      {t('selectionSettings.actionCopy') || '复制'}
+                    </div>
+                    <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                      {t('common.copySuccess') || '快速复制选中文本到剪贴板'}
+                    </div>
+                  </div>
+                </div>
+                <div className="text-[11px] font-medium text-slate-400 dark:text-slate-500 px-2 py-0.5 bg-slate-200/60 dark:bg-slate-700/60 rounded-md select-none">
+                  {t('selectionSettings.alwaysEnabled') || '常驻'}
+                </div>
+              </div>
+            </div>
+          </div>
+
           {/* 卡片 2: 工具栏 (含取词方式、紧凑模式) */}
           <div className="rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 p-5 shadow-2xs space-y-4">
             <h2 className="text-sm font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
@@ -550,6 +661,22 @@ export const SelectionSettings: React.FC = () => {
 
       {/* 辅助功能权限引导弹窗 */}
       <AccessibilityModal open={showPermissionModal} onOpenChange={setShowPermissionModal} />
+
+      {/* 搜索引擎配置弹窗 */}
+      <SearchEngineModal
+        open={showSearchEngineModal}
+        onOpenChange={setShowSearchEngineModal}
+        engine={selection.searchEngine || 'google'}
+        customName={selection.customSearchEngineName || ''}
+        customUrl={selection.customSearchEngineUrl || ''}
+        onSave={(engine, customName, customUrl) => {
+          handleUpdate({
+            searchEngine: engine,
+            customSearchEngineName: customName,
+            customSearchEngineUrl: customUrl
+          })
+        }}
+      />
     </div>
   )
 }

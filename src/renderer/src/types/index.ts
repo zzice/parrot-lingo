@@ -148,6 +148,10 @@ export interface SelectionConfig {
   shortcutKey: string
   autoPronounce: boolean
   autoExplain: boolean
+  showSearch?: boolean
+  searchEngine?: 'google' | 'baidu' | 'bing' | 'custom'
+  customSearchEngineName?: string
+  customSearchEngineUrl?: string
   defaultModelId: string
   targetLanguage: string
   filterMode: 'off' | 'whitelist' | 'blacklist'

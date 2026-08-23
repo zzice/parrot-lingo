@@ -8,6 +8,7 @@ export default {
     close: 'Close',
     save: 'Save',
     cancel: 'Cancel',
+    confirm: 'Confirm',
     reset: 'Reset',
     add: 'Add',
     delete: 'Delete',
@@ -140,7 +141,19 @@ export default {
     actionExplain: 'Explain',
     actionSummarize: 'Summary',
     actionSearch: 'Search',
-    actionCopy: 'Copy'
+    actionCopy: 'Copy',
+    functionsTitle: 'Functions',
+    alwaysEnabled: 'Always Enabled'
+  },
+  searchEngine: {
+    modalTitle: 'Configure Search Engine',
+    label: 'Search Engine',
+    selectPlaceholder: 'Select search engine',
+    custom: 'Custom',
+    customName: 'Custom Name',
+    customNamePlaceholder: 'Enter search engine name',
+    customUrl: 'Custom Search URL',
+    test: 'Test'
   },
   appearanceSettings: {
     title: 'Appearance & Language',

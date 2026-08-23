@@ -8,6 +8,7 @@ export default {
     close: '閉じる',
     save: '保存',
     cancel: 'キャンセル',
+    confirm: '確認',
     reset: 'リセット',
     add: '追加',
     delete: '削除',
@@ -134,7 +135,19 @@ export default {
     actionExplain: '解説',
     actionSummarize: '要約',
     actionSearch: '検索',
-    actionCopy: 'コピー'
+    actionCopy: 'コピー',
+    functionsTitle: '機能',
+    alwaysEnabled: '常駐'
+  },
+  searchEngine: {
+    modalTitle: '検索エンジンの設定',
+    label: '検索エンジン',
+    selectPlaceholder: '検索エンジンを選択',
+    custom: 'カスタム',
+    customName: 'カスタム名',
+    customNamePlaceholder: '検索エンジン名を入力',
+    customUrl: 'カスタム検索 URL',
+    test: 'テスト'
   },
   appearanceSettings: {
     title: '外観とアクセント',
