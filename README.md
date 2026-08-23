@@ -39,6 +39,10 @@
     <a href="#-license">License</a>
   </p>
 
+  <p align="center">
+    <img src="./docs/images/today-overview.png" alt="ParrotLingo Workbench - Today's Replay Overview" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+  </p>
+
 </div>
 
 ---
@@ -80,6 +84,10 @@ ParrotLingo provides full native support for modern desktop platforms:
 - **Custom Shortcut Triggers**: Quick translation via double-click `Cmd/Ctrl` or custom keybindings.
 - **Floating Action Window**: Pinned mode (`Pin`), stepless opacity adjustment (`20% - 100%`), and native frosted glass blur effect.
 
+<p align="center">
+  <img src="./docs/images/selection-assistant.png" alt="Instant Selection Assistant" width="520" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+</p>
+
 ### 🧠 2. BYOK & Flexible AI Model Ecosystem
 - **Built-in Presets**: Pre-configured with **ParrotLingo AI**, **DeepSeek**, **Zhipu AI (GLM-4)**, etc.
 - **Bring Your Own Key (BYOK)**: API keys are securely stored locally, calling model providers directly with zero telemetry.
@@ -90,6 +98,10 @@ ParrotLingo provides full native support for modern desktop platforms:
 - **One-Click Collect**: Save words, phrases, and entire context sentences into your personal vocabulary repository.
 - **Ebbinghaus Spaced Repetition**: Intelligently schedules daily review queues based on recall confidence (Remembered / Fuzzy / Forgotten).
 - **Embedded SQLite Storage**: Robust local database managing millions of items with instant full-text search, exportable as JSON.
+
+<p align="center">
+  <img src="./docs/images/spaced-review.png" alt="Spaced Review Learning Flow" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+</p>
 
 ### 🎨 4. Premium Aesthetic & 5-Language Localization
 - 🌓 **Adaptive Dark / Light Themes**: Seamlessly follows system appearance.

@@ -39,6 +39,10 @@
     <a href="#-开源协议">开源协议</a>
   </p>
 
+  <p align="center">
+    <img src="./docs/images/today-overview.png" alt="ParrotLingo 主工作台 - 今日遇见回放概览" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+  </p>
+
 </div>
 
 ---
@@ -80,6 +84,10 @@ ParrotLingo 提供对主流桌面操作系统的原生级完整支持：
 - **快捷键极速直达**：支持双击 `Cmd/Ctrl` 快速唤起翻译或自定义触发规则。
 - **独立功能弹窗**：支持置顶固定（Pin）、窗口透明度无级调节（20% ~ 100%）及原生毛玻璃模糊背景，多任务协同无干扰。
 
+<p align="center">
+  <img src="./docs/images/selection-assistant.png" alt="毫秒级划词翻译助手" width="520" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+</p>
+
 ### 🧠 2. 自由接入 AI 大模型（BYOK 模式）
 - **开箱即用预置模型**：内置预设 **ParrotLingo AI**、**DeepSeek**、**智谱 AI (GLM-4)** 等优质模型，一键即开即用。
 - **BYOK 隐私安全**：支持 Bring Your Own Key，所有 API Key 仅保存在本地设备，无第三方中间层转发，安全透明。
@@ -90,6 +98,10 @@ ParrotLingo 提供对主流桌面操作系统的原生级完整支持：
 - **一键生词入库**：划词界面随时将生词、短语及上下文原句加入本地语料库。
 - **艾宾浩斯抗遗忘算法**：智能规划每日复习队列，按掌握度打分（熟记/模糊/忘记），形成从“阅读遇到”到“真正掌握”的闭环。
 - **数据完全本地化**：基于高效嵌入式 SQLite 引擎，百万级词汇流畅检索，支持完整 JSON 备份与跨设备迁移。
+
+<p align="center">
+  <img src="./docs/images/spaced-review.png" alt="今日遇见回放学习流程" width="820" style="border-radius: 12px; box-shadow: 0 10px 30px rgba(0,0,0,0.08);" />
+</p>
 
 ### 🎨 4. 现代桌面设计美学 & 严格 5 语国际化
 - 🌓 **深浅模式自适应**：完美契合 macOS / Windows 系统外观切换。
