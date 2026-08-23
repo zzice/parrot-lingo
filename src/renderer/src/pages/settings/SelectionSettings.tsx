@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react'
 import {
   HelpCircle,
   Languages,
-  FileQuestion,
   Copy,
   Check,
   Sparkles,
@@ -175,15 +174,6 @@ export const SelectionSettings: React.FC = () => {
                 >
                   <Languages className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
                   {!selection.compactMode && <span>{t('selectionSettings.actionTranslate')}</span>}
-                </button>
-
-                {/* 解释 */}
-                <button
-                  type="button"
-                  className="group inline-flex items-center gap-1.5 px-3 h-full text-[13px] text-slate-700 dark:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 font-medium cursor-pointer transition-colors"
-                >
-                  <FileQuestion className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
-                  {!selection.compactMode && <span>{t('selectionSettings.actionExplain')}</span>}
                 </button>
 
                 {/* 复制 */}
