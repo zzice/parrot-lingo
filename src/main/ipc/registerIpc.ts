@@ -289,7 +289,10 @@ export function registerIpcHandlers() {
 
   /** 调用系统默认浏览器打开外部链接 */
   ipcMain.handle('system:openExternal', async (_, url: string) => {
-    if (url && (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:'))) {
+    if (
+      url &&
+      (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('mailto:'))
+    ) {
       await shell.openExternal(url)
       return true
     }
@@ -327,13 +330,13 @@ export function registerIpcHandlers() {
     let encountersCount = 0
     let reviewsCount = 0
     try {
-      const encRow = sqliteDb
-        .prepare('SELECT COUNT(*) as count FROM encounters')
-        .get() as { count: number }
+      const encRow = sqliteDb.prepare('SELECT COUNT(*) as count FROM encounters').get() as {
+        count: number
+      }
       encountersCount = encRow?.count || 0
-      const revRow = sqliteDb
-        .prepare('SELECT COUNT(*) as count FROM review_logs')
-        .get() as { count: number }
+      const revRow = sqliteDb.prepare('SELECT COUNT(*) as count FROM review_logs').get() as {
+        count: number
+      }
       reviewsCount = revRow?.count || 0
     } catch {
       // ignore

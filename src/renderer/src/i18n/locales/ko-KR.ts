@@ -255,7 +255,8 @@ export default {
     openFolderFailed: '데이터베이스 파일 경로를 찾을 수 없습니다',
     dangerZoneTitle: '위험 작업 영역',
     clearCorpusTitle: '모든 어휘 데이터 삭제',
-    clearCorpusDesc: '로컬 데이터베이스에 저장된 모든 단어, 문맥 기록 및 복습 로그를 영구 삭제합니다 (복구 불가)',
+    clearCorpusDesc:
+      '로컬 데이터베이스에 저장된 모든 단어, 문맥 기록 및 복습 로그를 영구 삭제합니다 (복구 불가)',
     clearCorpusBtn: '데이터 삭제',
     clearCorpusSuccess: '어휘 데이터가 성공적으로 삭제되었습니다',
     resetSettingsTitle: '앱 기본 설정 복원',
@@ -282,6 +283,7 @@ export default {
     downloadCancelled: '다운로드가 취소되었습니다',
     readyToInstall: '새 버전 설치 패키지가 준비되었습니다. 지금 재시작하여 설치를 완료하세요',
     installNow: '지금 재시작하여 업데이트',
+    installing: '설치 및 재시작 준비 중...',
     remindLater: '나중에 알림',
     viewNotes: '로그 보기',
     checkFailed: '업데이트 확인에 실패했습니다. 나중에 다시 시도하세요',

@@ -50,11 +50,7 @@ export const DefaultModelSettings: React.FC = () => {
             </p>
           </div>
 
-          <ModelSelect
-            value={currentModel}
-            onChange={handleUpdate}
-            allowFollow={false}
-          />
+          <ModelSelect value={currentModel} onChange={handleUpdate} allowFollow={false} />
         </div>
       </div>
     </div>

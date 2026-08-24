@@ -119,7 +119,8 @@ export default {
     opacity: 'Window Opacity',
     opacityDesc: 'Default opacity of action window; 100% is completely opaque',
     targetLanguageTitle: 'Target Language',
-    targetLanguageDesc: 'Primary language used for AI explanations, definitions, and example translations',
+    targetLanguageDesc:
+      'Primary language used for AI explanations, definitions, and example translations',
     targetLanguageFollow: 'Follow Interface Display Language (Default)',
     targetLanguageZhCN: 'Simplified Chinese (简体中文)',
     targetLanguageZhTW: 'Traditional Chinese (繁體中文)',
@@ -260,11 +261,13 @@ export default {
     openFolderFailed: 'Failed to locate database file path',
     dangerZoneTitle: 'Danger Zone',
     clearCorpusTitle: 'Clear All Corpus Data',
-    clearCorpusDesc: 'Permanently remove all vocabulary, context encounters and review logs (Irreversible)',
+    clearCorpusDesc:
+      'Permanently remove all vocabulary, context encounters and review logs (Irreversible)',
     clearCorpusBtn: 'Clear Data',
     clearCorpusSuccess: 'Corpus and vocabulary cleared successfully',
     resetSettingsTitle: 'Reset All Settings',
-    resetSettingsDesc: 'Reset all selection preferences, appearance and system configurations to defaults',
+    resetSettingsDesc:
+      'Reset all selection preferences, appearance and system configurations to defaults',
     resetSettingsBtn: 'Reset Defaults',
     resetSettingsSuccess: 'Settings have been reset to defaults',
     actionFailed: 'Action failed, please try again later'
@@ -287,6 +290,7 @@ export default {
     downloadCancelled: 'Update download cancelled',
     readyToInstall: 'Update package ready. Restart now to complete installation',
     installNow: 'Restart & Install',
+    installing: 'Preparing to install and restart...',
     remindLater: 'Remind Me Later',
     viewNotes: 'View Notes',
     checkFailed: 'Failed to check for updates. Please try again later',

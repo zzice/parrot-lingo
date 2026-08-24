@@ -102,7 +102,8 @@ export const PrivacySettings: React.FC = () => {
 
   const handleExportCSV = () => {
     try {
-      const header = 'Word,Phonetic,PartOfSpeech,Translation,Explanation,Example,Alternatives,Tags\n'
+      const header =
+        'Word,Phonetic,PartOfSpeech,Translation,Explanation,Example,Alternatives,Tags\n'
       const rows = corpusList
         .map((c) => {
           const text = (c.text || '').replace(/"/g, '""')
@@ -269,8 +270,16 @@ export const PrivacySettings: React.FC = () => {
               className="p-2 px-3 rounded-lg bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-700 dark:text-slate-200 text-xs font-medium flex items-center space-x-1.5 cursor-pointer transition-colors border border-slate-200/80 dark:border-slate-700/80 shrink-0"
               title="复制路径"
             >
-              {copied ? <Check className="w-3.5 h-3.5 text-emerald-500" /> : <Copy className="w-3.5 h-3.5" />}
-              <span>{copied ? t('privacySettings.copied') || '已复制' : t('privacySettings.copyPath') || '复制'}</span>
+              {copied ? (
+                <Check className="w-3.5 h-3.5 text-emerald-500" />
+              ) : (
+                <Copy className="w-3.5 h-3.5" />
+              )}
+              <span>
+                {copied
+                  ? t('privacySettings.copied') || '已复制'
+                  : t('privacySettings.copyPath') || '复制'}
+              </span>
             </button>
 
             <button

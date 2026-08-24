@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Sparkles, RefreshCw, CheckCircle2, Download, AlertCircle } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import logoImg from '../../assets/logo.png'
@@ -6,6 +6,7 @@ import { useAppStore } from '../../stores/useAppStore'
 
 export const AboutSettings: React.FC = () => {
   const { t } = useTranslation()
+  const [isInstalling, setIsInstalling] = useState(false)
 
   const {
     appVersion,
@@ -23,6 +24,15 @@ export const AboutSettings: React.FC = () => {
   const isAvailable = updaterState.status === 'available' && Boolean(updaterState.updateInfo)
   const isUpToDate = updaterState.status === 'not-available'
   const hasError = updaterState.status === 'error'
+
+  const handleInstall = async () => {
+    setIsInstalling(true)
+    try {
+      await installUpdate()
+    } finally {
+      setTimeout(() => setIsInstalling(false), 5000)
+    }
+  }
 
   const formatUpdaterError = (error: string): string => {
     if (!error) return t('updater.checkFailed') || '检查更新失败，请稍后重试'
@@ -49,7 +59,10 @@ export const AboutSettings: React.FC = () => {
       return t('updater.errorAuth') || '访问更新服务受限 (403/401)'
     }
     const lines = error.split('\n')
-    const firstLine = lines[0].replace(/^Error:\s*/, '').replace(/\{.*$/, '').trim()
+    const firstLine = lines[0]
+      .replace(/^Error:\s*/, '')
+      .replace(/\{.*$/, '')
+      .trim()
     return firstLine || t('updater.checkFailed') || '检查更新失败，请稍后重试'
   }
 
@@ -80,15 +93,25 @@ export const AboutSettings: React.FC = () => {
             <button
               type="button"
               tabIndex={-1}
-              onClick={installUpdate}
+              onClick={handleInstall}
+              disabled={isInstalling}
               style={{
                 backgroundColor: 'var(--color-primary)',
                 color: 'var(--color-primary-foreground)'
               }}
-              className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-2xs hover:opacity-90 cursor-pointer focus:outline-none transition-all"
+              className="px-4 py-2 rounded-xl text-xs font-semibold flex items-center space-x-1.5 shadow-2xs hover:opacity-90 disabled:opacity-50 cursor-pointer focus:outline-none transition-all"
             >
-              <CheckCircle2 className="w-3.5 h-3.5" />
-              <span>{t('updater.installNow')}</span>
+              {isInstalling ? (
+                <>
+                  <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                  <span>{t('updater.installing')}</span>
+                </>
+              ) : (
+                <>
+                  <CheckCircle2 className="w-3.5 h-3.5" />
+                  <span>{t('updater.installNow')}</span>
+                </>
+              )}
             </button>
           ) : isDownloading ? (
             <div className="flex items-center space-x-2">

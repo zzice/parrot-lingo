@@ -23,13 +23,8 @@ import { CefrBadge } from '../../components/CefrBadge'
 import { formatAppName } from '../../utils/formatApp'
 
 export const CorpusView: React.FC = () => {
-  const {
-    corpusList,
-    corpusSearch,
-    isCorpusLoading,
-    setCorpusSearch,
-    deleteCorpusItem
-  } = useAppStore()
+  const { corpusList, corpusSearch, isCorpusLoading, setCorpusSearch, deleteCorpusItem } =
+    useAppStore()
   const { t } = useTranslation()
   const [copiedId, setCopiedId] = useState<string | null>(null)
 
@@ -380,8 +375,13 @@ export const CorpusView: React.FC = () => {
                           {/* 英式音标 */}
                           {ukPhonetic && (
                             <div className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 shadow-2xs">
-                              <span className="text-[10px] font-bold text-slate-400 font-sans">英</span>
-                              <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                              <span className="text-[10px] font-bold text-slate-400 font-sans">
+                                英
+                              </span>
+                              <span
+                                className="font-semibold"
+                                style={{ color: 'var(--color-primary)' }}
+                              >
                                 {ukPhonetic}
                               </span>
                               <button
@@ -398,8 +398,13 @@ export const CorpusView: React.FC = () => {
                           {/* 美式音标 */}
                           {usPhonetic && (
                             <div className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 shadow-2xs">
-                              <span className="text-[10px] font-bold text-slate-400 font-sans">美</span>
-                              <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                              <span className="text-[10px] font-bold text-slate-400 font-sans">
+                                美
+                              </span>
+                              <span
+                                className="font-semibold"
+                                style={{ color: 'var(--color-primary)' }}
+                              >
                                 {usPhonetic}
                               </span>
                               <button
@@ -416,7 +421,10 @@ export const CorpusView: React.FC = () => {
                           {/* 兜底单音标 */}
                           {!ukPhonetic && !usPhonetic && item.phonetic && (
                             <div className="inline-flex items-center space-x-1.5 px-2.5 py-1 rounded-lg bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-700 dark:text-slate-300 shadow-2xs">
-                              <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                              <span
+                                className="font-semibold"
+                                style={{ color: 'var(--color-primary)' }}
+                              >
                                 {item.phonetic}
                               </span>
                               <button

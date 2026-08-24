@@ -255,7 +255,8 @@ export default {
     openFolderFailed: 'データベースのファイルパスが見つかりません',
     dangerZoneTitle: '危険な操作エリア',
     clearCorpusTitle: 'すべての語彙データを削除',
-    clearCorpusDesc: 'ローカルデータベースに保存されたすべての語彙、文脈履歴、復習ログを完全に削除します（取り消し不可）',
+    clearCorpusDesc:
+      'ローカルデータベースに保存されたすべての語彙、文脈履歴、復習ログを完全に削除します（取り消し不可）',
     clearCorpusBtn: 'データを削除',
     clearCorpusSuccess: '語彙データを正常に削除しました',
     resetSettingsTitle: 'アプリの初期設定に戻す',
@@ -282,6 +283,7 @@ export default {
     downloadCancelled: 'ダウンロードをキャンセルしました',
     readyToInstall: 'アップデートパッケージの準備ができました。再起動してインストールを完了します',
     installNow: '今すぐ再起動して更新',
+    installing: 'インストールと再起動を準備中...',
     remindLater: '後で通知',
     viewNotes: 'ログを見る',
     checkFailed: '更新の確認に失敗しました。後でもう一度お試しください',

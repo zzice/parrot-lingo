@@ -202,10 +202,17 @@ export const UpdateDialog: React.FC<UpdateDialogProps> = ({
               className="px-4 py-2 rounded-xl text-xs font-semibold hover:opacity-90 disabled:opacity-50 flex items-center space-x-1.5 shadow-2xs cursor-pointer transition-all focus:outline-none"
             >
               {isDownloaded ? (
-                <>
-                  <CheckCircle2 className="w-3.5 h-3.5" />
-                  <span>{t('updater.installNow')}</span>
-                </>
+                actionLoading ? (
+                  <>
+                    <RefreshCw className="w-3.5 h-3.5 animate-spin" />
+                    <span>{t('updater.installing')}</span>
+                  </>
+                ) : (
+                  <>
+                    <CheckCircle2 className="w-3.5 h-3.5" />
+                    <span>{t('updater.installNow')}</span>
+                  </>
+                )
               ) : isDownloading ? (
                 <>
                   <RefreshCw className="w-3.5 h-3.5 animate-spin" />

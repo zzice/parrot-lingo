@@ -879,9 +879,7 @@ export const ModelSettings: React.FC = () => {
                     }}
                     className="px-3.5 py-1.5 rounded-lg text-xs font-medium flex items-center space-x-1.5 hover:opacity-90 disabled:opacity-50 cursor-pointer shadow-2xs"
                   >
-                    <RefreshCw
-                      className={`w-3.5 h-3.5 ${fetchingModels ? 'animate-spin' : ''}`}
-                    />
+                    <RefreshCw className={`w-3.5 h-3.5 ${fetchingModels ? 'animate-spin' : ''}`} />
                     <span>
                       {fetchingModels
                         ? '拉取中...'

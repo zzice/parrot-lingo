@@ -98,8 +98,7 @@ export const INITIAL_CORPUS_ITEMS: CorpusItem[] = [
     text: 'parrot',
     canonical: 'parrot',
     phonetic: '/ˈpærət/',
-    translation:
-      'n. 鹦鹉；鹦鹉学舌的人；机械重复别人话的人\nv. 机械重复；鹦鹉学舌般地模仿',
+    translation: 'n. 鹦鹉；鹦鹉学舌的人；机械重复别人话的人\nv. 机械重复；鹦鹉学舌般地模仿',
     difficulty: 'A2',
     alternativeExpressions: [
       "talk like a parrot / parrot back sb.'s words（鹦鹉学舌般重复某人的话）",

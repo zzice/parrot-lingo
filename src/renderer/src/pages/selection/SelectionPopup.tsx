@@ -657,7 +657,8 @@ export const SelectionPopup: React.FC = () => {
         {(() => {
           const isEnglishSelection = /^[a-zA-Z\s'’\-]+$/.test((selectedText || '').trim())
           const nonEnglishPhonetic =
-            result?.phonetic || (!isEnglishSelection ? result?.phoneticUs || result?.phoneticUk : undefined)
+            result?.phonetic ||
+            (!isEnglishSelection ? result?.phoneticUs || result?.phoneticUk : undefined)
 
           if (isEnglishSelection) {
             if (!result?.phoneticUk && !result?.phoneticUs && !result?.phonetic) return null
@@ -882,7 +883,9 @@ export const SelectionPopup: React.FC = () => {
                   <div className="p-3 rounded-xl bg-slate-50/80 dark:bg-slate-950/50 border border-slate-200/60 dark:border-slate-800/60 space-y-1 text-xs">
                     {(result.bilingualExample.source || result.bilingualExample.en) && (
                       <div className="font-serif italic text-slate-700 dark:text-slate-200 leading-relaxed flex items-start justify-between space-x-2">
-                        <span>"{result.bilingualExample.source || result.bilingualExample.en}"</span>
+                        <span>
+                          "{result.bilingualExample.source || result.bilingualExample.en}"
+                        </span>
                         <button
                           type="button"
                           onClick={() =>

@@ -385,7 +385,8 @@ export const TodayView: React.FC = () => {
                     <span>{t('today.newCards') || '新词探索'}</span>
                   </div>
                   <div className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 font-mono tracking-tight">
-                    {newCount} <span className="text-xs font-normal text-slate-400 font-sans">条</span>
+                    {newCount}{' '}
+                    <span className="text-xs font-normal text-slate-400 font-sans">条</span>
                   </div>
                 </div>
 
@@ -398,7 +399,8 @@ export const TodayView: React.FC = () => {
                     <span>{t('today.reviewCards') || '语境复习'}</span>
                   </div>
                   <div className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 font-mono tracking-tight">
-                    {reviewCount} <span className="text-xs font-normal text-slate-400 font-sans">条</span>
+                    {reviewCount}{' '}
+                    <span className="text-xs font-normal text-slate-400 font-sans">条</span>
                   </div>
                 </div>
 
@@ -411,7 +413,8 @@ export const TodayView: React.FC = () => {
                     <span>{t('today.estTime') || '预计耗时'}</span>
                   </div>
                   <div className="text-2xl md:text-3xl font-black text-slate-900 dark:text-slate-100 font-mono tracking-tight">
-                    ~{estMinutes} <span className="text-xs font-normal text-slate-400 font-sans">分钟</span>
+                    ~{estMinutes}{' '}
+                    <span className="text-xs font-normal text-slate-400 font-sans">分钟</span>
                   </div>
                 </div>
               </div>
@@ -684,7 +687,9 @@ export const TodayView: React.FC = () => {
                 <div className="space-y-2">
                   <div className="text-[11px] font-bold text-slate-400 dark:text-slate-500 flex items-center space-x-1">
                     <Quote className="w-3.5 h-3.5" />
-                    <span>{t('today.clozeGuide') || '根据工作场景语境，回想划线空白处应填入的英文表达'}</span>
+                    <span>
+                      {t('today.clozeGuide') || '根据工作场景语境，回想划线空白处应填入的英文表达'}
+                    </span>
                   </div>
                   <div className="p-4 rounded-2xl bg-slate-50 dark:bg-slate-950/60 border border-slate-200/70 dark:border-slate-800/70">
                     {renderClozeSentence(contextSentence || item.text, item.text, isRevealed)}
@@ -725,7 +730,8 @@ export const TodayView: React.FC = () => {
                           : '回想对应的英文单词与拼写'}
                     </p>
                     <p className="text-[11px] text-slate-400 dark:text-slate-500">
-                      {t('today.clickToRevealHint') || '想好了吗？点击卡片或按空格 [Space] 揭晓答案'}
+                      {t('today.clickToRevealHint') ||
+                        '想好了吗？点击卡片或按空格 [Space] 揭晓答案'}
                     </p>
                   </div>
                 </div>
@@ -740,7 +746,10 @@ export const TodayView: React.FC = () => {
                           {item.text}
                         </div>
                         {usPhonetic && (
-                          <div style={{ color: 'var(--color-primary)' }} className="text-xs font-mono font-semibold">
+                          <div
+                            style={{ color: 'var(--color-primary)' }}
+                            className="text-xs font-mono font-semibold"
+                          >
                             {usPhonetic}
                           </div>
                         )}
@@ -760,7 +769,10 @@ export const TodayView: React.FC = () => {
                   {posList && posList.length > 0 ? (
                     <div className="p-4 rounded-2xl bg-slate-50/90 dark:bg-slate-950/70 border border-slate-200/70 dark:border-slate-800/70 space-y-2 select-text">
                       {posList.map((p, idx) => (
-                        <div key={idx} className="flex items-start space-x-2.5 text-xs leading-relaxed">
+                        <div
+                          key={idx}
+                          className="flex items-start space-x-2.5 text-xs leading-relaxed"
+                        >
                           <span
                             style={{
                               backgroundColor: 'var(--color-primary-subtle)',
@@ -771,7 +783,9 @@ export const TodayView: React.FC = () => {
                           >
                             {p.pos || '释'}
                           </span>
-                          <span className="text-slate-800 dark:text-slate-200 font-medium">{p.meaning}</span>
+                          <span className="text-slate-800 dark:text-slate-200 font-medium">
+                            {p.meaning}
+                          </span>
                         </div>
                       ))}
                     </div>
@@ -920,7 +934,8 @@ export const TodayView: React.FC = () => {
       {/* 底部快捷键提示 */}
       <div className="text-center text-[10px] text-slate-400 dark:text-slate-600 space-x-4 shrink-0">
         <span>
-          按 <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono">Space</kbd>{' '}
+          按{' '}
+          <kbd className="px-1 py-0.5 rounded bg-slate-200 dark:bg-slate-800 font-mono">Space</kbd>{' '}
           {isRevealed
             ? t('today.replayPronunciation') || '重听发音'
             : t('today.revealAnswer') || '揭晓'}

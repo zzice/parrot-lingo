@@ -2,7 +2,7 @@
 
   <img src="./resources/icon.png" alt="ParrotLingo Logo" width="108" height="108" style="border-radius: 22px; margin-bottom: 12px;" />
 
-  # ParrotLingo
+# ParrotLingo
 
   <p align="center">
     <strong>AI-Powered Next-Gen Desktop Assistant for Immersive Language Learning & Instant Selection Translation</strong><br />
@@ -52,6 +52,7 @@
 When browsing the web, reading papers, or writing code, switching between translation apps constantly interrupts your flow, and looked-up words are easily forgotten.
 
 **ParrotLingo** is crafted for professionals and lifelong learners who value peak efficiency and systematic language mastery:
+
 - **Instant Global Selection**: Highlight any text on your screen to translate with near-zero latency, accompanied by deep contextual explanations (phonetics, grammar nuances, collocations, native alternatives).
 - **Local-First & Private**: All vocabulary, corpus items, and review records stay on your local device via embedded SQLite.
 - **BYOK (Bring Your Own Key)**: Directly connect to your preferred AI models with zero intermediate server relays.
@@ -63,10 +64,10 @@ When browsing the web, reading papers, or writing code, switching between transl
 
 ParrotLingo provides full native support for modern desktop platforms:
 
-| Platform | Architecture | Distribution Formats | Status |
-| :--- | :--- | :--- | :--- |
-| **macOS** (11.0+) | Apple Silicon (M1/M2/M3/M4) & Intel (x64) | `.dmg` • `.zip` | ✅ Fully Supported |
-| **Windows** (10/11) | x64 & ARM64 | `.exe` (NSIS Installer) | ✅ Fully Supported |
+| Platform            | Architecture                              | Distribution Formats    | Status             |
+| :------------------ | :---------------------------------------- | :---------------------- | :----------------- |
+| **macOS** (11.0+)   | Apple Silicon (M1/M2/M3/M4) & Intel (x64) | `.dmg` • `.zip`         | ✅ Fully Supported |
+| **Windows** (10/11) | x64 & ARM64                               | `.exe` (NSIS Installer) | ✅ Fully Supported |
 
 ---
 
@@ -80,6 +81,7 @@ ParrotLingo provides full native support for modern desktop platforms:
 ```
 
 ### ⚡️ 1. Ultra-fast Floating Capsule & Action Window
+
 - **System-wide Native Selection**: Powered by macOS Accessibility & global low-level hooks. Text selected anywhere pops up a responsive floating capsule.
 - **Custom Shortcut Triggers**: Quick translation via double-click `Cmd/Ctrl` or custom keybindings.
 - **Floating Action Window**: Pinned mode (`Pin`), stepless opacity adjustment (`20% - 100%`), and native frosted glass blur effect.
@@ -89,12 +91,14 @@ ParrotLingo provides full native support for modern desktop platforms:
 </p>
 
 ### 🧠 2. BYOK & Flexible AI Model Ecosystem
+
 - **Built-in Presets**: Pre-configured with **ParrotLingo AI**, **DeepSeek**, **Zhipu AI (GLM-4)**, etc.
 - **Bring Your Own Key (BYOK)**: API keys are securely stored locally, calling model providers directly with zero telemetry.
 - **Custom Models & Local LLMs**: Full compatibility with **OpenAI-compatible APIs**, allowing you to plug in any custom provider or local offline LLMs via **Ollama** or **LM Studio**.
 - **Deep Semantic Analysis**: Goes beyond literal translation to break down nuances, parts of speech, and authentic native collocations.
 
 ### 📚 3. Personal Corpus & "Today's Replay" Spaced Review
+
 - **One-Click Collect**: Save words, phrases, and entire context sentences into your personal vocabulary repository.
 - **Ebbinghaus Spaced Repetition**: Intelligently schedules daily review queues based on recall confidence (Remembered / Fuzzy / Forgotten).
 - **Embedded SQLite Storage**: Robust local database managing millions of items with instant full-text search, exportable as JSON.
@@ -104,6 +108,7 @@ ParrotLingo provides full native support for modern desktop platforms:
 </p>
 
 ### 🎨 4. Premium Aesthetic & 5-Language Localization
+
 - 🌓 **Adaptive Dark / Light Themes**: Seamlessly follows system appearance.
 - 🎨 **Dynamic Accent Palette**: 7 curated designer themes (Emerald, Ocean Blue, Royal Purple, Rose Pink, Amber Orange, Teal Cyan, Slate) + custom HEX color input.
 - 🌐 **Strict 5-Language i18n**: Fully localized in **English**, **简体中文**, **繁體中文**, **日本語**, and **한국어**.
@@ -114,25 +119,27 @@ ParrotLingo provides full native support for modern desktop platforms:
 
 ParrotLingo is built with a modern desktop stack designed for speed and reliability:
 
-| Layer | Technology | Details |
-| :--- | :--- | :--- |
-| **Desktop Runtime** | `Electron 39` + `Node.js 22` | Multi-window desktop container |
-| **Build Tooling** | `electron-vite 5` + `Vite 7` | Ultra-fast HMR and optimized builds |
-| **UI Framework** | `React 19` + `TypeScript 5.9` | Component-driven, strictly typed UI |
-| **Design & Styling** | `Tailwind CSS v4` + `Radix UI` + `Lucide` | Modern, responsive desktop UI tokens |
-| **State Management**| `Zustand 5` | IPC-synchronized cross-window state store |
-| **Local Database** | `better-sqlite3 13` | High-concurrency embedded SQLite |
-| **Native Integration**| `macOS Accessibility APIs` / `uiohook-napi` | Global cursor positioning & selection hooks |
+| Layer                  | Technology                                  | Details                                     |
+| :--------------------- | :------------------------------------------ | :------------------------------------------ |
+| **Desktop Runtime**    | `Electron 39` + `Node.js 22`                | Multi-window desktop container              |
+| **Build Tooling**      | `electron-vite 5` + `Vite 7`                | Ultra-fast HMR and optimized builds         |
+| **UI Framework**       | `React 19` + `TypeScript 5.9`               | Component-driven, strictly typed UI         |
+| **Design & Styling**   | `Tailwind CSS v4` + `Radix UI` + `Lucide`   | Modern, responsive desktop UI tokens        |
+| **State Management**   | `Zustand 5`                                 | IPC-synchronized cross-window state store   |
+| **Local Database**     | `better-sqlite3 13`                         | High-concurrency embedded SQLite            |
+| **Native Integration** | `macOS Accessibility APIs` / `uiohook-napi` | Global cursor positioning & selection hooks |
 
 ---
 
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - **Node.js** >= 22.0.0
 - **pnpm** >= 9.0.0
 
 ### 1. Clone & Install Dependencies
+
 ```bash
 git clone https://github.com/zzice/parrot-lingo.git
 cd parrot-lingo
@@ -141,11 +148,13 @@ pnpm install
 ```
 
 ### 2. Run in Development Mode
+
 ```bash
 pnpm dev
 ```
 
 ### 3. Type Check & Formatting
+
 ```bash
 # TypeScript verification (Node + Web)
 pnpm typecheck
@@ -177,6 +186,7 @@ pnpm build
 ## 🔄 Auto-Update Flow
 
 ParrotLingo features automated multi-platform release CI/CD:
+
 1. Update version in `package.json` and push a git tag (e.g. `git tag v0.0.1 && git push origin --tags`).
 2. GitHub Actions automatically compiles macOS and Windows release binaries.
 3. Built-in `electron-updater` delivers in-app update notifications and seamless installation.

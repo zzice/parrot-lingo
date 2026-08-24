@@ -39,10 +39,7 @@ Output ONLY a single valid JSON object strictly matching this schema:
 
 export const READING_GENERATION_SYSTEM_PROMPT = buildReadingGenerationSystemPrompt('zh-CN')
 
-export function buildReadingGenerationUserContent(
-  words: string[],
-  scenarioTheme?: string
-): string {
+export function buildReadingGenerationUserContent(words: string[], scenarioTheme?: string): string {
   const themeText = scenarioTheme ? `Theme / Domain: ${scenarioTheme}\n` : ''
   return `${themeText}Target Vocabulary List to integrate:\n${words.map((w, idx) => `${idx + 1}. ${w}`).join('\n')}`
 }

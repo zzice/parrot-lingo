@@ -282,6 +282,7 @@ export default {
     downloadCancelled: '已取消更新包下載',
     readyToInstall: '新版本安裝包已就緒，立即重啟安裝',
     installNow: '立即重啟安裝',
+    installing: '正在準備安裝並重啟...',
     remindLater: '稍後提醒',
     viewNotes: '查看日誌',
     checkFailed: '檢查更新失敗，請稍後重試',

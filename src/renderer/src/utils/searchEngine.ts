@@ -6,7 +6,10 @@ export interface SearchEngineOption {
   urlTemplate: string
 }
 
-export const PRESET_SEARCH_ENGINES: Record<Exclude<SearchEngineType, 'custom'>, SearchEngineOption> = {
+export const PRESET_SEARCH_ENGINES: Record<
+  Exclude<SearchEngineType, 'custom'>,
+  SearchEngineOption
+> = {
   google: {
     id: 'google',
     name: 'Google',

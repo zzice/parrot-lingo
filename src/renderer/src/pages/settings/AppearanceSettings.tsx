@@ -119,120 +119,118 @@ export const AppearanceSettings: React.FC = () => {
   return (
     <div className="flex-1 h-full overflow-y-auto p-6 space-y-5 select-none">
       {/* 卡片 1: 主题模式 (视觉化卡片预览) */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
-          <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
-            {t('appearanceSettings.themeModeTitle') || '主题模式'}
-          </div>
+      <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
+        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+          {t('appearanceSettings.themeModeTitle') || '主题模式'}
+        </div>
 
-          <div className="grid grid-cols-3 gap-3">
-            {themeOptions.map((opt) => {
-              const Icon = opt.icon
-              const isSelected = (system.theme || 'dark') === opt.id
+        <div className="grid grid-cols-3 gap-3">
+          {themeOptions.map((opt) => {
+            const Icon = opt.icon
+            const isSelected = (system.theme || 'dark') === opt.id
 
-              return (
-                <button
-                  key={opt.id}
-                  type="button"
-                  onClick={() => handleThemeChange(opt.id)}
-                  className="group flex flex-col cursor-pointer text-left focus:outline-none"
+            return (
+              <button
+                key={opt.id}
+                type="button"
+                onClick={() => handleThemeChange(opt.id)}
+                className="group flex flex-col cursor-pointer text-left focus:outline-none"
+              >
+                <div
+                  style={
+                    isSelected
+                      ? {
+                          borderColor: 'var(--color-primary)',
+                          backgroundColor: 'var(--color-primary-subtle)',
+                          boxShadow: '0 0 0 2px var(--color-primary-border)'
+                        }
+                      : undefined
+                  }
+                  className={`p-2 rounded-xl border transition-all ${
+                    isSelected
+                      ? 'shadow-xs'
+                      : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700'
+                  }`}
                 >
-                  <div
-                    style={
-                      isSelected
-                        ? {
-                            borderColor: 'var(--color-primary)',
-                            backgroundColor: 'var(--color-primary-subtle)',
-                            boxShadow: '0 0 0 2px var(--color-primary-border)'
-                          }
-                        : undefined
-                    }
-                    className={`p-2 rounded-xl border transition-all ${
-                      isSelected
-                        ? 'shadow-xs'
-                        : 'border-slate-200 dark:border-slate-800 bg-slate-50/50 dark:bg-slate-950/40 hover:border-slate-300 dark:hover:border-slate-700'
+                  <ThemePreview mode={opt.id} />
+                </div>
+                <div className="mt-2.5 flex items-center justify-center space-x-1.5 text-xs">
+                  <Icon
+                    style={isSelected ? { color: 'var(--color-primary)' } : undefined}
+                    className={`w-3.5 h-3.5 ${isSelected ? '' : 'text-slate-400'}`}
+                  />
+                  <span
+                    style={isSelected ? { color: 'var(--color-primary)' } : undefined}
+                    className={`font-medium ${
+                      isSelected ? 'font-bold' : 'text-slate-600 dark:text-slate-300'
                     }`}
                   >
-                    <ThemePreview mode={opt.id} />
-                  </div>
-                  <div className="mt-2.5 flex items-center justify-center space-x-1.5 text-xs">
-                    <Icon
-                      style={isSelected ? { color: 'var(--color-primary)' } : undefined}
-                      className={`w-3.5 h-3.5 ${isSelected ? '' : 'text-slate-400'}`}
-                    />
-                    <span
-                      style={isSelected ? { color: 'var(--color-primary)' } : undefined}
-                      className={`font-medium ${
-                        isSelected ? 'font-bold' : 'text-slate-600 dark:text-slate-300'
-                      }`}
-                    >
-                      {opt.label}
-                    </span>
-                  </div>
-                </button>
-              )
-            })}
-          </div>
+                    {opt.label}
+                  </span>
+                </div>
+              </button>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* 卡片 2: 主题强调色 */}
+      <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
+        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+          {t('appearanceSettings.themeColorTitle') || '主题强调色'}
         </div>
 
-        {/* 卡片 2: 主题强调色 */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
-          <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
-            {t('appearanceSettings.themeColorTitle') || '主题强调色'}
+        <div className="space-y-2">
+          <div className="text-xs text-slate-500 dark:text-slate-400">
+            {t('appearanceSettings.themeColorDesc') || '选择或自定义界面核心按钮、高亮与交互强调色'}
           </div>
+          <ThemeColorPicker
+            value={system.themeColor || '#10B981'}
+            onChange={handleColorChange}
+            className="pt-1"
+          />
+        </div>
+      </div>
 
-          <div className="space-y-2">
-            <div className="text-xs text-slate-500 dark:text-slate-400">
-              {t('appearanceSettings.themeColorDesc') ||
-                '选择或自定义界面核心按钮、高亮与交互强调色'}
-            </div>
-            <ThemeColorPicker
-              value={system.themeColor || '#10B981'}
-              onChange={handleColorChange}
-              className="pt-1"
-            />
-          </div>
+      {/* 卡片 3: 界面语言 (支持中/繁/英/日/韩 5 种语言) */}
+      <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
+        <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
+          {t('appearanceSettings.languageTitle') || '界面语言'}
         </div>
 
-        {/* 卡片 3: 界面语言 (支持中/繁/英/日/韩 5 种语言) */}
-        <div className="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800/80 shadow-2xs space-y-4">
-          <div className="text-xs font-bold text-slate-800 dark:text-slate-100 border-b border-slate-100 dark:border-slate-800/60 pb-3">
-            {t('appearanceSettings.languageTitle') || '界面语言'}
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center space-x-2.5">
-              <Globe className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
-              <div>
-                <div className="text-xs font-medium text-slate-700 dark:text-slate-200">
-                  {t('appearanceSettings.languageTitle') || '界面语言'}
-                </div>
-                <div className="text-[11px] text-slate-400 dark:text-slate-500">
-                  {t('appearanceSettings.languageDesc') ||
-                    '选择 ParrotLingo 界面使用的主要显示语言'}
-                </div>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center space-x-2.5">
+            <Globe className="w-4 h-4" style={{ color: 'var(--color-primary)' }} />
+            <div>
+              <div className="text-xs font-medium text-slate-700 dark:text-slate-200">
+                {t('appearanceSettings.languageTitle') || '界面语言'}
+              </div>
+              <div className="text-[11px] text-slate-400 dark:text-slate-500">
+                {t('appearanceSettings.languageDesc') || '选择 ParrotLingo 界面使用的主要显示语言'}
               </div>
             </div>
+          </div>
 
-            <div className="w-52">
-              <Select
-                value={system.language || 'zh-CN'}
-                onValueChange={(val: AppLanguage) => handleLanguageChange(val)}
-              >
-                <SelectTrigger className="h-8 text-xs">
-                  <SelectValue placeholder="选择语言" />
-                </SelectTrigger>
-                <SelectContent>
-                  {SUPPORTED_LANGUAGES.map((lang) => (
-                    <SelectItem key={lang.id} value={lang.id}>
-                      <span className="mr-2">{lang.flag}</span>
-                      <span>{lang.label}</span>
-                    </SelectItem>
-                  ))}
-                </SelectContent>
-              </Select>
-            </div>
+          <div className="w-52">
+            <Select
+              value={system.language || 'zh-CN'}
+              onValueChange={(val: AppLanguage) => handleLanguageChange(val)}
+            >
+              <SelectTrigger className="h-8 text-xs">
+                <SelectValue placeholder="选择语言" />
+              </SelectTrigger>
+              <SelectContent>
+                {SUPPORTED_LANGUAGES.map((lang) => (
+                  <SelectItem key={lang.id} value={lang.id}>
+                    <span className="mr-2">{lang.flag}</span>
+                    <span>{lang.label}</span>
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
           </div>
         </div>
+      </div>
     </div>
   )
 }

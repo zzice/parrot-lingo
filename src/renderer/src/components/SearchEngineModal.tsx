@@ -2,13 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Globe } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from './ui/dialog'
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue
-} from './ui/select'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from './ui/select'
 import { SearchEngineType, buildSearchUrl } from '../utils/searchEngine'
 
 interface SearchEngineModalProps {
