@@ -200,6 +200,19 @@ export class SelectionService {
 
   // ─── Positioning ──────────────────────────────────────────────────────────
 
+  private static isSamePoint(point1: Point, point2: Point): boolean {
+    return point1.x === point2.x && point1.y === point2.y
+  }
+
+  private static isSameLineWithRectPoint(
+    startTop: Point,
+    startBottom: Point,
+    endTop: Point,
+    endBottom: Point
+  ): boolean {
+    return startTop.y === endTop.y && startBottom.y === endBottom.y
+  }
+
   private static calcPosition(selectionData: TextSelectionData): {
     refPoint: Point
     orientation: RelativeOrientation
@@ -207,6 +220,7 @@ export class SelectionService {
     const posLevel = selectionData.posLevel
     // posLevel 0 = NONE, 1 = MOUSE_SINGLE, 2 = MOUSE_DUAL, 3+ = SEL_FULL/DETAILED
     let refPoint: Point = { x: 0, y: 0 }
+    let isLogical = false
     let orientation: RelativeOrientation = 'bottomMiddle'
 
     if (!SelectionHook) return { refPoint, orientation }
@@ -217,6 +231,7 @@ export class SelectionService {
         const cursor = screen.getCursorScreenPoint()
         refPoint = { x: cursor.x, y: cursor.y }
         orientation = 'bottomMiddle'
+        isLogical = true
         break
       }
       case SelectionHook.PositionLevel?.MOUSE_SINGLE:
@@ -233,25 +248,119 @@ export class SelectionService {
         const dy = (selectionData.mousePosEnd?.y ?? 0) - (selectionData.mousePosStart?.y ?? 0)
         const dx = (selectionData.mousePosEnd?.x ?? 0) - (selectionData.mousePosStart?.x ?? 0)
         if (Math.abs(dy) > 14) {
-          refPoint = {
-            x: selectionData.mousePosEnd?.x ?? 0,
-            y: (selectionData.mousePosEnd?.y ?? 0) + 16
+          if (dy > 0) {
+            refPoint = {
+              x: selectionData.mousePosEnd?.x ?? 0,
+              y: (selectionData.mousePosEnd?.y ?? 0) + 16
+            }
+            orientation = 'bottomLeft'
+          } else {
+            refPoint = {
+              x: selectionData.mousePosEnd?.x ?? 0,
+              y: (selectionData.mousePosEnd?.y ?? 0) - 16
+            }
+            orientation = 'topRight'
           }
-          orientation = dy > 0 ? 'bottomLeft' : 'topRight'
         } else {
-          refPoint = {
-            x: selectionData.mousePosEnd?.x ?? 0,
-            y: (selectionData.mousePosEnd?.y ?? 0) + 16
+          if (dx > 0) {
+            refPoint = {
+              x: selectionData.mousePosEnd?.x ?? 0,
+              y:
+                Math.max(selectionData.mousePosEnd?.y ?? 0, selectionData.mousePosStart?.y ?? 0) +
+                16
+            }
+            orientation = 'bottomLeft'
+          } else {
+            refPoint = {
+              x: selectionData.mousePosEnd?.x ?? 0,
+              y:
+                Math.min(selectionData.mousePosEnd?.y ?? 0, selectionData.mousePosStart?.y ?? 0) +
+                16
+            }
+            orientation = 'bottomRight'
           }
-          orientation = dx > 0 ? 'bottomLeft' : 'bottomRight'
         }
         break
       }
       default: {
         // SEL_FULL / SEL_DETAILED
-        const endBottom = selectionData.endBottom ?? { x: 0, y: 0 }
-        refPoint = { x: endBottom.x, y: endBottom.y + 4 }
-        orientation = 'bottomLeft'
+        const isNoMouse =
+          !selectionData.mousePosStart ||
+          (!selectionData.mousePosStart.x &&
+            !selectionData.mousePosStart.y &&
+            !selectionData.mousePosEnd?.x &&
+            !selectionData.mousePosEnd?.y)
+
+        if (isNoMouse) {
+          const endBottom = selectionData.endBottom ?? { x: 0, y: 0 }
+          refPoint = { x: endBottom.x, y: endBottom.y + 4 }
+          orientation = 'bottomLeft'
+          break
+        }
+
+        const isDoubleClick =
+          selectionData.mousePosStart &&
+          selectionData.mousePosEnd &&
+          this.isSamePoint(selectionData.mousePosStart, selectionData.mousePosEnd)
+
+        const isSameLine =
+          selectionData.startTop &&
+          selectionData.startBottom &&
+          selectionData.endTop &&
+          selectionData.endBottom &&
+          this.isSameLineWithRectPoint(
+            selectionData.startTop,
+            selectionData.startBottom,
+            selectionData.endTop,
+            selectionData.endBottom
+          )
+
+        // 双击选词且在同一行：贴近选区底部居中
+        if (isDoubleClick && isSameLine) {
+          refPoint = {
+            x: selectionData.mousePosEnd.x,
+            y: (selectionData.endBottom?.y ?? 0) + 4
+          }
+          orientation = 'bottomMiddle'
+          break
+        }
+
+        // 同一行划选
+        if (isSameLine) {
+          const direction =
+            (selectionData.mousePosEnd?.x ?? 0) - (selectionData.mousePosStart?.x ?? 0)
+          if (direction > 0) {
+            refPoint = {
+              x: selectionData.endBottom?.x ?? 0,
+              y: (selectionData.endBottom?.y ?? 0) + 4
+            }
+            orientation = 'bottomLeft'
+          } else {
+            refPoint = {
+              x: selectionData.startBottom?.x ?? 0,
+              y: (selectionData.startBottom?.y ?? 0) + 4
+            }
+            orientation = 'bottomRight'
+          }
+          break
+        }
+
+        // 多行划选：根据鼠标垂直滑动方向决定靠下还是靠上
+        const direction =
+          (selectionData.mousePosEnd?.y ?? 0) - (selectionData.mousePosStart?.y ?? 0)
+        if (direction > 0) {
+          refPoint = {
+            x: selectionData.endBottom?.x ?? 0,
+            y: (selectionData.endBottom?.y ?? 0) + 4
+          }
+          orientation = 'bottomLeft'
+        } else {
+          refPoint = {
+            x: selectionData.startTop?.x ?? 0,
+            y: (selectionData.startTop?.y ?? 0) - 4
+          }
+          orientation = 'topRight'
+        }
         break
       }
     }
@@ -261,6 +370,13 @@ export class SelectionService {
       const cursor = screen.getCursorScreenPoint()
       refPoint = { x: cursor.x, y: cursor.y }
       orientation = 'bottomMiddle'
+      isLogical = true
+    }
+
+    // [Windows/Linux] selection-hook 返回物理像素 (Physical Pixels)，需转换为 Electron 逻辑像素 (DIP)
+    if (!isLogical && (process.platform === 'win32' || process.platform === 'linux')) {
+      const dipPoint = screen.screenToDipPoint(refPoint)
+      refPoint = { x: Math.round(dipPoint.x), y: Math.round(dipPoint.y) }
     }
 
     return { refPoint, orientation }
@@ -321,12 +437,18 @@ export class SelectionService {
     const bounds = getToolbarWindowBounds()
     if (!bounds) return
 
-    const point = { x: data.x, y: data.y }
+    // [Windows/Linux] selection-hook 返回物理像素，需转为逻辑像素后进行窗口包围盒碰撞检测
+    const rawPoint = { x: data.x, y: data.y }
+    const mousePoint =
+      process.platform === 'win32' || process.platform === 'linux'
+        ? screen.screenToDipPoint(rawPoint)
+        : rawPoint
+
     const inside =
-      point.x >= bounds.x &&
-      point.x <= bounds.x + bounds.width &&
-      point.y >= bounds.y &&
-      point.y <= bounds.y + bounds.height
+      mousePoint.x >= bounds.x &&
+      mousePoint.x <= bounds.x + bounds.width &&
+      mousePoint.y >= bounds.y &&
+      mousePoint.y <= bounds.y + bounds.height
 
     if (!inside) {
       hideToolbarWindow()

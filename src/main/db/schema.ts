@@ -63,7 +63,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     customSearchEngineName: '',
     customSearchEngineUrl: '',
     defaultModelId: 'parrot-lingo-v1',
-    targetLanguage: 'zh-CN',
+    targetLanguage: 'follow',
     filterMode: 'blacklist',
     blacklistApps: ['ParrotLingo', 'com.parrotlingo.app'],
     whitelistApps: []
