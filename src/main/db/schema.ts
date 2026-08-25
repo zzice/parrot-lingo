@@ -52,7 +52,7 @@ export const DEFAULT_SETTINGS: AppSettings = {
     compactMode: false,
     followToolbar: true,
     rememberSize: false,
-    autoClose: false,
+    autoClose: true,
     autoPin: false,
     opacity: 100,
     shortcutKey: 'Alt+S',
