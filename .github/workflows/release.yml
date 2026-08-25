@@ -44,10 +44,10 @@ jobs:
         with:
           version: 10
 
-      - name: Setup Node.js 22
+      - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: 22
+          node-version: 20
           cache: 'pnpm'
 
       - name: Install Dependencies
@@ -78,6 +78,7 @@ jobs:
       - name: Build Windows Artifacts (NSIS Setup Exe x64)
         if: matrix.platform == 'win'
         run: |
+          pnpm exec electron-builder install-app-deps --platform=win32 --arch=x64
           pnpm exec electron-vite build
           pnpm exec electron-builder --win --x64 --publish never
 
