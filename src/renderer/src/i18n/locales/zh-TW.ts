@@ -399,5 +399,16 @@ export default {
     bannerPending: '劃詞助手待授權',
     bannerEnable: '去開啟',
     bannerTooltip: '劃詞助手尚未獲得 macOS 輔助功能權限，點擊前往開啟'
+  },
+  diagnostics: {
+    title: '運行診斷與技術支援',
+    desc: '一鍵匯出應用運行日誌或檢視系統環境診斷資訊，便於快速定位和排查問題',
+    exportLogs: '匯出運行日誌',
+    exporting: '正在匯出...',
+    exportSuccess: '日誌已成功匯出',
+    exportFailed: '匯出日誌失敗',
+    openLogDir: '開啟日誌目錄',
+    copySummary: '複製診斷報告',
+    copySuccess: '診斷報告已複製到剪貼簿'
   }
 }

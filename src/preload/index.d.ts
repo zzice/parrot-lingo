@@ -89,6 +89,9 @@ declare global {
           encountersCount: number
           reviewsCount: number
         }>
+        exportLogs: () => Promise<{ success: boolean; filePath?: string; error?: string }>
+        openLogDir: () => Promise<boolean>
+        getDiagnosticSummary: () => Promise<string>
       }
       selection: {
         determineToolbarSize: (width: number, height: number) => Promise<boolean>

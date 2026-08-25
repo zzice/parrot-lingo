@@ -400,5 +400,16 @@ export default {
     bannerPending: '選択アシスタントの権限が必要',
     bannerEnable: '設定する',
     bannerTooltip: '選択アシスタントの権限が未許可です。クリックして設定を開きます'
+  },
+  diagnostics: {
+    title: '診断とサポート',
+    desc: '問題の特定とトラブルシューティングのために、実行ログとシステム診断情報を書き出します',
+    exportLogs: '実行ログを出力',
+    exporting: '出力中...',
+    exportSuccess: 'ログが正常に出力されました',
+    exportFailed: 'ログの出力に失敗しました',
+    openLogDir: 'ログフォルダを開く',
+    copySummary: '診断レポートをコピー',
+    copySuccess: '診断レポートをクリップボードにコピーしました'
   }
 }

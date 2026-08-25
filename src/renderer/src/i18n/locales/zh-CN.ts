@@ -399,5 +399,16 @@ export default {
     bannerPending: '划词助手待授权',
     bannerEnable: '去开启',
     bannerTooltip: '划词助手尚未获得 macOS 辅助功能权限，点击前往开启'
+  },
+  diagnostics: {
+    title: '运行诊断与技术支持',
+    desc: '一键导出应用运行日志或查看系统环境诊断信息，便于快速定位和排查问题',
+    exportLogs: '导出运行日志',
+    exporting: '正在导出...',
+    exportSuccess: '日志已成功导出',
+    exportFailed: '导出日志失败',
+    openLogDir: '打开日志目录',
+    copySummary: '复制诊断报告',
+    copySuccess: '诊断报告已复制到剪贴板'
   }
 }

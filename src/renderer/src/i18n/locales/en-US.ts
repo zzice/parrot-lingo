@@ -412,5 +412,16 @@ export default {
     bannerEnable: 'Enable',
     bannerTooltip:
       'ParrotLingo needs macOS Accessibility permission to capture selected words, click to open'
+  },
+  diagnostics: {
+    title: 'Diagnostics & Support',
+    desc: 'Export application runtime logs and system diagnostic summary for troubleshooting',
+    exportLogs: 'Export Runtime Logs',
+    exporting: 'Exporting...',
+    exportSuccess: 'Logs exported successfully',
+    exportFailed: 'Failed to export logs',
+    openLogDir: 'Open Log Directory',
+    copySummary: 'Copy Diagnostics',
+    copySuccess: 'Diagnostic summary copied to clipboard'
   }
 }

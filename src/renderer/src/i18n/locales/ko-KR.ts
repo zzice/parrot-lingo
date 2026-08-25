@@ -399,5 +399,16 @@ export default {
     bannerPending: '선택 어시스턴트 권한 필요',
     bannerEnable: '설정하기',
     bannerTooltip: '선택 어시스턴트 접근성 권한이 허용되지 않았습니다. 클릭하여 설정 열기'
+  },
+  diagnostics: {
+    title: '진단 및 기술 지원',
+    desc: '문제 해결 및 지원을 위해 앱 실행 로그 및 시스템 진단 요약을 내보냅니다',
+    exportLogs: '실행 로그 내보내기',
+    exporting: '내보내는 중...',
+    exportSuccess: '로그를 성공적으로 내보냈습니다',
+    exportFailed: '로그 내보내기 실패',
+    openLogDir: '로그 디렉터리 열기',
+    copySummary: '진단 보고서 복사',
+    copySuccess: '진단 보고서가 클립보드에 복사되었습니다'
   }
 }

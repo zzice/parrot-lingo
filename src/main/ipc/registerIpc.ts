@@ -24,6 +24,7 @@ import { AppService } from '../services/appService'
 import { TrayService } from '../services/trayService'
 import { ProxyService } from '../services/proxyService'
 import { AppUpdaterService } from '../services/appUpdaterService'
+import { DiagnosticsService } from '../services/diagnosticsService'
 import { createMainWindow } from '../windows/mainWindow'
 import {
   ModelProvider,
@@ -349,6 +350,21 @@ export function registerIpcHandlers() {
       encountersCount,
       reviewsCount
     }
+  })
+
+  /** 导出应用运行日志与诊断信息到本地文件 */
+  ipcMain.handle('system:exportLogs', async () => {
+    return DiagnosticsService.exportLogs()
+  })
+
+  /** 在文件资源管理器/访达中打开日志目录 */
+  ipcMain.handle('system:openLogDir', async () => {
+    return DiagnosticsService.openLogDir()
+  })
+
+  /** 获取系统诊断摘要文本（供剪贴板快速复制） */
+  ipcMain.handle('system:getDiagnosticSummary', async () => {
+    return DiagnosticsService.getDiagnosticSummary()
   })
 
   // ─── 划词助手 IPC ─────────────────────────────────────────────────────────

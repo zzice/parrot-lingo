@@ -90,7 +90,11 @@ const api = {
       corpusCount: number
       encountersCount: number
       reviewsCount: number
-    }> => ipcRenderer.invoke('system:getStorageStats')
+    }> => ipcRenderer.invoke('system:getStorageStats'),
+    exportLogs: (): Promise<{ success: boolean; filePath?: string; error?: string }> =>
+      ipcRenderer.invoke('system:exportLogs'),
+    openLogDir: (): Promise<boolean> => ipcRenderer.invoke('system:openLogDir'),
+    getDiagnosticSummary: (): Promise<string> => ipcRenderer.invoke('system:getDiagnosticSummary')
   },
   selection: {
     determineToolbarSize: (width: number, height: number): Promise<boolean> =>

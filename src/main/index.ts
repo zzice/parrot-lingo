@@ -13,6 +13,7 @@ import { ProxyService } from './services/proxyService'
 import { AppUpdaterService } from './services/appUpdaterService'
 import { createToolbarWindow } from './windows/toolbarWindow'
 import { SettingsRepository } from './db/repositories/settingsRepository'
+import { Logger } from './utils/logger'
 import icon from '../../resources/icon.png?asset'
 
 // 单实例锁控制
@@ -26,6 +27,9 @@ if (!gotTheLock) {
   })
 
   app.whenReady().then(() => {
+    // 初始化全量文件日志记录器
+    Logger.init()
+
     // 设置应用 AppUserModelId 与 macOS Dock 图标 (遵循 macOS HIG 标准 824x824 squircle 尺寸规范)
     electronApp.setAppUserModelId('com.parrotlingo.app')
     if (process.platform === 'darwin' && app.dock) {
