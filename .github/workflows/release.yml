@@ -60,12 +60,16 @@ jobs:
         if: matrix.platform == 'mac'
         run: |
           # 1. 构建 Apple Silicon (arm64) 原生架构产物
+          rm -rf node_modules/selection-hook/build node_modules/uiohook-napi/build
           pnpm exec electron-builder install-app-deps --platform=darwin --arch=arm64
+          rm -rf node_modules/selection-hook/build node_modules/uiohook-napi/build
           pnpm exec electron-vite build
           pnpm exec electron-builder --mac --arm64 --publish never
 
           # 2. 重新针对 Intel (x64) 原生架构重新编译底层 C++ 模块并打包
+          rm -rf node_modules/selection-hook/build node_modules/uiohook-napi/build
           pnpm exec electron-builder install-app-deps --platform=darwin --arch=x64
+          rm -rf node_modules/selection-hook/build node_modules/uiohook-napi/build
           pnpm exec electron-vite build
           pnpm exec electron-builder --mac --x64 --publish never
         env:
