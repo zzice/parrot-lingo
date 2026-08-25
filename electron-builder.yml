@@ -18,6 +18,8 @@ files:
 asarUnpack:
   - resources/**
   - '**/*.node'
+  - '**/selection-hook/**'
+  - '**/uiohook-napi/**'
 win:
   executableName: ParrotLingo
   icon: resources/icon.png

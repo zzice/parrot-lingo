@@ -1,6 +1,6 @@
 {
   "name": "parrot-lingo",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Local-first language learning and translation desktop application with AI selection assistant",
   "main": "./out/main/index.js",
   "author": "example.com",
@@ -21,7 +21,8 @@
     "postinstall": "electron-builder install-app-deps",
     "build:unpack": "npm run build && electron-builder --dir",
     "build:win": "npm run build && electron-builder --win",
-    "build:mac": "electron-vite build && electron-builder --mac --x64",
+    "build:mac": "electron-vite build && electron-builder --mac",
+    "build:mac:x64": "electron-vite build && electron-builder --mac --x64",
     "build:mac:arm64": "electron-vite build && electron-builder --mac --arm64",
     "build:mac:all": "electron-vite build && electron-builder --mac --x64 --arm64"
   },

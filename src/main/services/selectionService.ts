@@ -41,6 +41,16 @@ export class SelectionService {
     return this.lastActiveAppName
   }
 
+  public static getIsRunning(): boolean {
+    return this.isRunning
+  }
+
+  public static restart(): void {
+    console.log('[SelectionService] Restarting selection service...')
+    this.stop()
+    this.syncWithSettings()
+  }
+
   // ─── Lifecycle ────────────────────────────────────────────────────────────
 
   static syncWithSettings(): void {
@@ -140,6 +150,13 @@ export class SelectionService {
         this.selectionHook.removeAllListeners()
         if (typeof this.selectionHook.stop === 'function') {
           this.selectionHook.stop()
+        }
+        if (typeof this.selectionHook.cleanup === 'function') {
+          try {
+            this.selectionHook.cleanup()
+          } catch (cleanErr) {
+            console.warn('[SelectionService] cleanup error:', cleanErr)
+          }
         }
         this.selectionHook = null
       }
@@ -365,8 +382,8 @@ export class SelectionService {
       }
     }
 
-    // 如果未获取到有效坐标，兜底使用当前鼠标光标位置
-    if (refPoint.x === 0 && refPoint.y === 0) {
+    // 如果未获取到有效坐标（例如 Linux/macOS 返回 INVALID_COORDINATE = -99999），兜底使用当前鼠标光标位置
+    if (refPoint.x < -90000 || refPoint.y < -90000 || (refPoint.x === 0 && refPoint.y === 0)) {
       const cursor = screen.getCursorScreenPoint()
       refPoint = { x: cursor.x, y: cursor.y }
       orientation = 'bottomMiddle'
