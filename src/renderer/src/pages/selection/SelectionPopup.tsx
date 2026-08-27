@@ -17,7 +17,7 @@ import {
   AlertCircle
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { ExplainResponse } from '../../types'
+import { ExplainRequest, ExplainResponse } from '../../types'
 import { useAppStore } from '../../stores/useAppStore'
 import { Slider } from '../../components/ui/slider'
 import { ModelSelect } from '../../components/ModelSelect'
@@ -40,10 +40,12 @@ export const SelectionPopup: React.FC = () => {
   const [copied, setCopied] = useState(false)
   const [sourceApp, setSourceApp] = useState<string>('')
 
-  const [isPinned, setIsPinned] = useState(false)
+  const [isPinned, setIsPinned] = useState<boolean>(() => Boolean(settings?.selection?.autoPin))
   const [showOriginal, setShowOriginal] = useState(false)
   const [showOpacitySlider, setShowOpacitySlider] = useState(false)
-  const [localOpacity, setLocalOpacity] = useState(100)
+  const [localOpacity, setLocalOpacity] = useState<number>(
+    () => settings?.selection?.opacity ?? 100
+  )
 
   const isMac = typeof navigator !== 'undefined' && navigator.userAgent.includes('Mac')
 
@@ -52,7 +54,13 @@ export const SelectionPopup: React.FC = () => {
     document.documentElement.classList.add('selection-popup-active')
     document.body.classList.add('selection-popup-active')
     init()
-    fetchSettings()
+    fetchSettings().then(() => {
+      const curSettings = useAppStore.getState().settings
+      if (curSettings?.selection) {
+        setLocalOpacity(curSettings.selection.opacity ?? 100)
+        setIsPinned(Boolean(curSettings.selection.autoPin))
+      }
+    })
     fetchProviders()
 
     return () => {
@@ -82,14 +90,6 @@ export const SelectionPopup: React.FC = () => {
     }
   }, [settings?.system])
 
-  useEffect(() => {
-    if (settings?.selection) {
-      const op = settings.selection.opacity ?? 100
-      setLocalOpacity(op)
-      setIsPinned(Boolean(settings.selection.autoPin))
-    }
-  }, [settings?.selection])
-
   // 保存入库状态与倒计时管理
   const [saveInfo, setSaveInfo] = useState<{
     encounterId: string
@@ -99,7 +99,7 @@ export const SelectionPopup: React.FC = () => {
     secondsLeft: number
   } | null>(null)
 
-  const countdownTimerRef = useRef<any>(null)
+  const countdownTimerRef = useRef<NodeJS.Timeout | null>(null)
   const inFlightReqIdRef = useRef<number>(0)
   const lastFetchedKeyRef = useRef<string>('')
   const sourceAppRef = useRef<string | null>(null)
@@ -110,7 +110,7 @@ export const SelectionPopup: React.FC = () => {
     currentModelKeyRef.current = currentModelKey
   }, [currentModelKey])
 
-  const clearCountdown = () => {
+  const clearCountdown = (): void => {
     if (countdownTimerRef.current) {
       clearInterval(countdownTimerRef.current)
       countdownTimerRef.current = null
@@ -160,7 +160,7 @@ export const SelectionPopup: React.FC = () => {
       setSaveInfo(null)
       setResult(null)
 
-      const reqPayload: any = {
+      const reqPayload: ExplainRequest = {
         text: cleanText,
         context,
         task: action,
@@ -330,6 +330,10 @@ export const SelectionPopup: React.FC = () => {
       streamAbortRef.current()
       streamAbortRef.current = null
     }
+    setSelectedText('')
+    setContextText('')
+    setSourceApp('')
+    sourceAppRef.current = null
     setResult(null)
     setLoading(true)
     setIsStreaming(false)
@@ -337,16 +341,21 @@ export const SelectionPopup: React.FC = () => {
     setShowOriginal(false)
   }, [])
 
-  // 当窗口隐藏时立即重置状态，保证下一次划词唤起时绝不闪烁旧内容
+  // 当窗口隐藏或失去焦点时立即重置状态，保证下一次划词唤起时绝不闪烁旧内容
   useEffect(() => {
-    const handleVisibilityChange = () => {
+    const handleVisibilityChange = (): void => {
       if (document.visibilityState === 'hidden') {
         resetState()
       }
     }
+    const handlePageHide = (): void => {
+      resetState()
+    }
     document.addEventListener('visibilitychange', handleVisibilityChange)
+    window.addEventListener('pagehide', handlePageHide)
     return () => {
       document.removeEventListener('visibilitychange', handleVisibilityChange)
+      window.removeEventListener('pagehide', handlePageHide)
     }
   }, [resetState])
 
@@ -356,7 +365,17 @@ export const SelectionPopup: React.FC = () => {
       force = false
     ) => {
       if (!payload?.text) return
-      resetState()
+      clearCountdown()
+      if (streamAbortRef.current) {
+        streamAbortRef.current()
+        streamAbortRef.current = null
+      }
+      setResult(null)
+      setLoading(true)
+      setIsStreaming(false)
+      setSaveInfo(null)
+      setShowOriginal(false)
+
       setSelectedText(payload.text)
       setContextText(payload.context || '')
       const app = payload.sourceApp || ''
@@ -372,16 +391,18 @@ export const SelectionPopup: React.FC = () => {
       document.title = `${title} - ParrotLingo`
       fetchExplanation(payload.text, payload.context, type, undefined, force)
     },
-    [fetchExplanation, resetState, t]
+    [fetchExplanation, t]
   )
 
   const updateContentRef = React.useRef(updateContent)
-  updateContentRef.current = updateContent
+  useEffect(() => {
+    updateContentRef.current = updateContent
+  }, [updateContent])
 
   // 初始化加载当前窗口专属数据 (仅在挂载时执行一次)
   useEffect(() => {
     let isMounted = true
-    const loadInitData = async () => {
+    const loadInitData = async (): Promise<void> => {
       if (window.api?.selection?.getInitData) {
         const initData = await window.api.selection.getInitData()
         if (isMounted && initData?.text) {
@@ -395,24 +416,33 @@ export const SelectionPopup: React.FC = () => {
     }
   }, [])
 
-  // 监听触发事件 (仅在挂载时注册单次，通过 ref 保证获取最新逻辑，默认非强制刷新以命中本地缓存)
+  // 监听触发与重置事件 (仅在挂载时注册单次，通过 ref 保证获取最新逻辑，默认非强制刷新以命中本地缓存)
   useEffect(() => {
     if (window.events) {
-      const cleanup = window.events.on('selection:triggered', (payload: any) => {
-        fetchProviders()
-        fetchSettings()
-        setCurrentModelKey('follow')
-        if (payload?.text) {
-          updateContentRef.current(payload, false)
-        }
+      const cleanupReset = window.events.on('selection:reset', () => {
+        resetState()
       })
-      return cleanup
+      const cleanupTrigger = window.events.on(
+        'selection:triggered',
+        (payload: { text: string; context?: string; action?: string; sourceApp?: string }) => {
+          fetchProviders()
+          fetchSettings()
+          setCurrentModelKey('follow')
+          if (payload?.text) {
+            updateContentRef.current(payload, false)
+          }
+        }
+      )
+      return () => {
+        if (cleanupReset) cleanupReset()
+        if (cleanupTrigger) cleanupTrigger()
+      }
     }
     return undefined
-  }, [fetchProviders, fetchSettings])
+  }, [fetchProviders, fetchSettings, resetState])
 
   // 置顶切换
-  const handleTogglePin = async () => {
+  const handleTogglePin = async (): Promise<void> => {
     const next = !isPinned
     setIsPinned(next)
     if (window.api?.selection) {
@@ -421,7 +451,7 @@ export const SelectionPopup: React.FC = () => {
   }
 
   // 透明度拖动实时生效
-  const handleOpacityChange = (value: number[]) => {
+  const handleOpacityChange = (value: number[]): void => {
     const val = value[0]
     setLocalOpacity(val)
     if (window.api?.selection) {
@@ -430,7 +460,7 @@ export const SelectionPopup: React.FC = () => {
   }
 
   // 透明度释放保存到偏好
-  const handleOpacityCommit = (value: number[]) => {
+  const handleOpacityCommit = (value: number[]): void => {
     const val = value[0]
     if (settings?.selection) {
       updateSettings({
@@ -450,7 +480,7 @@ export const SelectionPopup: React.FC = () => {
     return fallback
   }
 
-  const speak = (text: string, lang?: string) => {
+  const speak = (text: string, lang?: string): void => {
     if ('speechSynthesis' in window) {
       window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(text)
@@ -460,33 +490,34 @@ export const SelectionPopup: React.FC = () => {
     }
   }
 
-  const handleUndoEncounter = async () => {
+  const handleUndoEncounter = async (): Promise<void> => {
     if (!saveInfo?.encounterId || !window.api?.encounters) return
     clearCountdown()
     await window.api.encounters.undo(saveInfo.encounterId)
     setSaveInfo((prev) => (prev ? { ...prev, undone: true, secondsLeft: 0 } : null))
   }
 
-  const handleCopy = () => {
+  const handleCopy = useCallback((): void => {
     if (!result?.translation) return
     navigator.clipboard.writeText(result.translation)
     setCopied(true)
     setTimeout(() => setCopied(false), 1500)
-  }
+  }, [result])
 
-  const handleClose = () => {
+  const handleClose = useCallback((): void => {
+    resetState()
     if (window.api?.windowControl) {
       window.api.windowControl.hideSelection()
     }
-  }
+  }, [resetState])
 
-  const handleRegenerate = () => {
+  const handleRegenerate = useCallback((): void => {
     fetchExplanation(selectedText, contextText, actionType, currentModelKey, true)
-  }
+  }, [fetchExplanation, selectedText, contextText, actionType, currentModelKey])
 
   // 快捷键支持 (Esc 退出, R 重新生成, C 复制)
   useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
+    const handleKeyDown = (e: KeyboardEvent): void => {
       if (e.key === 'Escape') {
         handleClose()
       } else if ((e.key === 'r' || e.key === 'R') && !e.metaKey && !e.ctrlKey && !e.altKey) {
@@ -500,7 +531,7 @@ export const SelectionPopup: React.FC = () => {
     }
     window.addEventListener('keydown', handleKeyDown)
     return () => window.removeEventListener('keydown', handleKeyDown)
-  }, [selectedText, contextText, actionType, result, currentModelKey])
+  }, [handleClose, handleCopy, handleRegenerate])
 
   return (
     <div className="w-screen h-screen m-0 p-0 select-none flex flex-col justify-between overflow-hidden bg-transparent">
@@ -655,7 +686,7 @@ export const SelectionPopup: React.FC = () => {
 
         {/* 音标与注音展示区域 */}
         {(() => {
-          const isEnglishSelection = /^[a-zA-Z\s'’\-]+$/.test((selectedText || '').trim())
+          const isEnglishSelection = /^[a-zA-Z\s'’-]+$/.test((selectedText || '').trim())
           const nonEnglishPhonetic =
             result?.phonetic ||
             (!isEnglishSelection ? result?.phoneticUs || result?.phoneticUk : undefined)
@@ -754,7 +785,7 @@ export const SelectionPopup: React.FC = () => {
         {/* 折叠的原本文内容卡片 */}
         {showOriginal && (
           <div className="mx-4 mt-2 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/60 text-xs text-slate-600 dark:text-slate-400 italic">
-            "{contextText || selectedText}"
+            &ldquo;{contextText || selectedText}&rdquo;
           </div>
         )}
 
@@ -884,7 +915,8 @@ export const SelectionPopup: React.FC = () => {
                     {(result.bilingualExample.source || result.bilingualExample.en) && (
                       <div className="font-serif italic text-slate-700 dark:text-slate-200 leading-relaxed flex items-start justify-between space-x-2">
                         <span>
-                          "{result.bilingualExample.source || result.bilingualExample.en}"
+                          &ldquo;{result.bilingualExample.source || result.bilingualExample.en}
+                          &rdquo;
                         </span>
                         <button
                           type="button"

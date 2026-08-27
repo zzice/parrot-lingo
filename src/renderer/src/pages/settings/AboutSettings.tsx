@@ -19,7 +19,10 @@ export const AboutSettings: React.FC = () => {
   const { t } = useTranslation()
   const [isInstalling, setIsInstalling] = useState(false)
   const [isExportingLogs, setIsExportingLogs] = useState(false)
-  const [exportFeedback, setExportFeedback] = useState<{ type: 'success' | 'error'; text: string } | null>(null)
+  const [exportFeedback, setExportFeedback] = useState<{
+    type: 'success' | 'error'
+    text: string
+  } | null>(null)
   const [copiedSummary, setCopiedSummary] = useState(false)
 
   const {
@@ -311,9 +314,7 @@ export const AboutSettings: React.FC = () => {
             <h2 className="text-sm font-semibold text-slate-800 dark:text-slate-100">
               {t('diagnostics.title')}
             </h2>
-            <p className="text-xs text-slate-400 dark:text-slate-500">
-              {t('diagnostics.desc')}
-            </p>
+            <p className="text-xs text-slate-400 dark:text-slate-500">{t('diagnostics.desc')}</p>
           </div>
         </div>
 
@@ -352,7 +353,9 @@ export const AboutSettings: React.FC = () => {
             ) : (
               <FileDown className="w-3.5 h-3.5" />
             )}
-            <span>{isExportingLogs ? t('diagnostics.exporting') : t('diagnostics.exportLogs')}</span>
+            <span>
+              {isExportingLogs ? t('diagnostics.exporting') : t('diagnostics.exportLogs')}
+            </span>
           </button>
 
           <button
@@ -376,7 +379,9 @@ export const AboutSettings: React.FC = () => {
             ) : (
               <Copy className="w-3.5 h-3.5 text-slate-500 dark:text-slate-400" />
             )}
-            <span>{copiedSummary ? t('diagnostics.copySuccess') : t('diagnostics.copySummary')}</span>
+            <span>
+              {copiedSummary ? t('diagnostics.copySuccess') : t('diagnostics.copySummary')}
+            </span>
           </button>
         </div>
       </div>
@@ -385,4 +390,3 @@ export const AboutSettings: React.FC = () => {
 }
 
 export default AboutSettings
-

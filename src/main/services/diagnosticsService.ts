@@ -49,7 +49,11 @@ export class DiagnosticsService {
   /**
    * 弹出系统保存文件对话框，将诊断报告与全量运行日志一键导出
    */
-  public static async exportLogs(): Promise<{ success: boolean; filePath?: string; error?: string }> {
+  public static async exportLogs(): Promise<{
+    success: boolean
+    filePath?: string
+    error?: string
+  }> {
     try {
       const now = new Date()
       const timestamp =
@@ -62,7 +66,10 @@ export class DiagnosticsService {
         String(now.getSeconds()).padStart(2, '0')
 
       const defaultFileName = `parrot-lingo-diagnostics-${timestamp}.txt`
-      const defaultPath = path.join(app.getPath('downloads') || app.getPath('desktop'), defaultFileName)
+      const defaultPath = path.join(
+        app.getPath('downloads') || app.getPath('desktop'),
+        defaultFileName
+      )
 
       const result = await dialog.showSaveDialog({
         title: '导出运行日志与诊断信息',

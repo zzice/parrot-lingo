@@ -30,7 +30,7 @@ export class AccessibilityService {
 
   /**
    * 校验当前划词助手权限状态并进行无缝自动恢复与保护
-   * 
+   *
    * 优化策略：
    * 1. 绝对不篡改用户的数据库配置（不将 settings.selection.enabled 强制置为 false）。
    * 2. 当检测到用户在系统偏好中完成授权时，自动无缝启动 SelectionService。

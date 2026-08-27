@@ -7,12 +7,13 @@ export const EVENT_NAMES = {
   SETTINGS_CHANGED: 'settings:changed',
   PROVIDERS_CHANGED: 'providers:changed',
   SELECTION_TRIGGERED: 'selection:triggered',
+  SELECTION_RESET: 'selection:reset',
   MODEL_SWITCHED: 'model:switched'
 } as const
 
 class AppEventBus extends EventEmitter {
   // 广播到所有已打开的渲染窗口
-  public broadcastToAllWindows(channel: string, payload?: any) {
+  public broadcastToAllWindows(channel: string, payload?: unknown): void {
     this.emit(channel, payload)
     const windows = BrowserWindow.getAllWindows()
     windows.forEach((win) => {

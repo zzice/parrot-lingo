@@ -1,4 +1,4 @@
-import { app, BrowserWindow, screen } from 'electron'
+import { app, BrowserWindow, screen, shell } from 'electron'
 import { join } from 'path'
 import { is } from '@electron-toolkit/utils'
 import { EVENT_NAMES } from '../events/eventBus'
@@ -68,7 +68,6 @@ export function createSelectionWindow(): BrowserWindow {
   }
 
   // 拦截全部 window.open，强制调用系统默认外部浏览器打开（防止在应用内部弹出 Electron 窗口）
-  const { shell } = require('electron')
   win.webContents.setWindowOpenHandler((details) => {
     shell.openExternal(details.url)
     return { action: 'deny' }
@@ -88,7 +87,7 @@ export function createSelectionWindow(): BrowserWindow {
 
   // 拦截关闭事件，转为安全隐藏（防止窗口销毁与 macOS 触发应用激活导致工作台弹出）
   win.on('close', (event) => {
-    if (!(app as any).isQuitting) {
+    if (!(app as unknown as { isQuitting?: boolean }).isQuitting) {
       event.preventDefault()
       hideSelectionWindow(win)
     }
@@ -146,7 +145,7 @@ export function showSelectionWindowWithText(
   context?: string,
   action?: string,
   sourceApp?: string
-) {
+): void {
   const win = getOrCreateAvailableWindow()
   const settings = SettingsRepository.get()
 
@@ -239,19 +238,20 @@ export function showSelectionWindowWithText(
 
   if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
     windowInitDataMap.set(win.webContents.id, payload)
-    // 窗口展示与焦点保护由 quirks 自动接管
-    win.show()
 
-    // 仅单独发送给目标窗口，禁止广播给所有窗口以防止数据串扰
-    if (win.webContents.isLoading()) {
+    // 优先向渲染进程发送数据，确保 React 在窗口展示前已开始重置并准备新内容
+    if (!win.webContents.isLoading()) {
+      win.webContents.send(EVENT_NAMES.SELECTION_TRIGGERED, payload)
+    } else {
       win.webContents.once('did-finish-load', () => {
         if (!win.isDestroyed() && !win.webContents.isDestroyed()) {
           win.webContents.send(EVENT_NAMES.SELECTION_TRIGGERED, payload)
         }
       })
-    } else {
-      win.webContents.send(EVENT_NAMES.SELECTION_TRIGGERED, payload)
     }
+
+    // 窗口展示与焦点保护由 quirks 自动接管
+    win.show()
   }
 }
 
@@ -261,12 +261,20 @@ export function getSelectionWindowInitData(
   return windowInitDataMap.get(webContentsId) || null
 }
 
-export function hideSelectionWindow(targetWin?: BrowserWindow | null) {
+export function hideSelectionWindow(targetWin?: BrowserWindow | null): void {
   if (targetWin && !targetWin.isDestroyed()) {
+    if (!targetWin.webContents.isDestroyed()) {
+      windowInitDataMap.delete(targetWin.webContents.id)
+      targetWin.webContents.send(EVENT_NAMES.SELECTION_RESET)
+    }
     targetWin.hide()
   } else {
     for (const win of activeSelectionWindows) {
       if (!win.isDestroyed()) {
+        if (!win.webContents.isDestroyed()) {
+          windowInitDataMap.delete(win.webContents.id)
+          win.webContents.send(EVENT_NAMES.SELECTION_RESET)
+        }
         win.hide()
       }
     }
