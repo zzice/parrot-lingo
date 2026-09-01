@@ -34,7 +34,7 @@
     <a href="#-supported-platforms">Supported Platforms</a> •
     <a href="#-tech-stack">Tech Stack</a> •
     <a href="#-quick-start">Quick Start</a> •
-    <a href="#-installation--download">Installation</a> •
+    <a href="#-frequently-asked-questions-faq">FAQ</a> •
     <a href="#-acknowledgements">Acknowledgements</a> •
     <a href="#-license">License</a>
   </p>
@@ -204,6 +204,29 @@ ParrotLingo features automated multi-platform release CI/CD:
 1. Update version in `package.json` and push a git tag (e.g. `git tag v0.0.1 && git push origin --tags`).
 2. GitHub Actions automatically compiles macOS and Windows release binaries.
 3. Built-in `electron-updater` delivers in-app update notifications and seamless installation.
+
+---
+
+## ❓ Frequently Asked Questions (FAQ)
+
+### 1. Why do I need to re-authorize Accessibility permissions after each macOS update?
+
+On macOS, Accessibility (`AXUIElement`) permissions are tied to the binary's code signature and checksum. Since open-source packages are distributed without an expensive commercial Apple Developer ID certificate, macOS treats each updated binary as a new application and invalidates the previous system authorization.
+
+**Solution:**
+
+1. Open macOS **System Settings** ➔ **Privacy & Security** ➔ **Accessibility**.
+2. Locate **ParrotLingo** in the list, toggle it **OFF and then back ON** (or remove it via `-` and re-add `/Applications/ParrotLingo.app` with `+`).
+3. Restart ParrotLingo for global selection and shortcut hooks to function normally.
+
+### 2. What if macOS says "ParrotLingo is damaged and can't be opened"?
+
+macOS Gatekeeper automatically isolates newly downloaded unsigned binaries (`com.apple.quarantine`).  
+**Solution**: Open Terminal and run:
+
+```bash
+sudo xattr -rd com.apple.quarantine /Applications/ParrotLingo.app
+```
 
 ---
 
