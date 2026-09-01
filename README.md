@@ -97,6 +97,20 @@ ParrotLingo provides full native support for modern desktop platforms:
 - **Custom Models & Local LLMs**: Full compatibility with **OpenAI-compatible APIs**, allowing you to plug in any custom provider or local offline LLMs via **Ollama** or **LM Studio**.
 - **Deep Semantic Analysis**: Goes beyond literal translation to break down nuances, parts of speech, and authentic native collocations.
 
+#### 🎁 Quick Guide: Connect Free Model Agnes (Agnes 全模态免费大模型)
+
+ParrotLingo seamlessly connects with [Agnes](https://www.agnes-ai.cn/) free all-modal models via standard OpenAI protocol:
+
+1. **Get API Key**: Register at [Agnes AI Official Site](https://www.agnes-ai.cn/) and copy your free API Key (`sk-xxx`).
+2. **Open ParrotLingo Settings**: Navigate to **Settings** (`设置`) ➔ **Model Providers** (`模型服务`) ➔ Click **Add Provider** (`添加服务商`).
+3. **Configure Connection**:
+   - **Protocol**: `OpenAI (Chat)`
+   - **Provider Name**: `Agnes`
+   - **API URL (Base URL)**: `https://api.openai.com/v1`
+   - **API Key**: `sk-xxxx`
+   - **Default Model ID**: `agnes-2.5-flash`
+4. **Save & Start**: Click **Confirm/Save**, and enjoy high-speed, free AI-powered translations and lookups!
+
 ### 📚 3. Personal Corpus & "Today's Replay" Spaced Review
 
 - **One-Click Collect**: Save words, phrases, and entire context sentences into your personal vocabulary repository.
