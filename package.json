@@ -1,6 +1,6 @@
 {
   "name": "parrot-lingo",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Local-first language learning and translation desktop application with AI selection assistant",
   "main": "./out/main/index.js",
   "author": "example.com",
