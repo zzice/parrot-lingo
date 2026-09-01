@@ -80,7 +80,7 @@ export const TodayView: React.FC = () => {
       window.speechSynthesis.cancel()
       const utterance = new SpeechSynthesisUtterance(text)
       utterance.lang = lang || detectSpeechLang(text, 'en-US')
-      utterance.rate = 0.95
+      utterance.rate = 0.8
       window.speechSynthesis.speak(utterance)
     }
   }
