@@ -379,7 +379,10 @@ export default {
     undoTooltip: '撤銷本次遇見記錄',
     notRecorded: '○ 未記錄',
     analyzing: '正在分析...',
-    streaming: '即時生成中...'
+    streaming: '即時生成中...',
+    emptySelectionTitle: '未偵測到有效劃詞內容',
+    emptySelectionHint: '請重新劃選單詞或句子；若已劃選，請檢查系統輔助功能授權。',
+    openAccessibility: '檢查輔助功能授權'
   },
   accessibilityModal: {
     title: '開啟劃詞助手 · 需要輔助功能授權',

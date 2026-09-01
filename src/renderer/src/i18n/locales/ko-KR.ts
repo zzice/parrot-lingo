@@ -380,7 +380,11 @@ export default {
     undoTooltip: '이번 만남 기록 취소',
     notRecorded: '○ 미기록',
     analyzing: '분석 중...',
-    streaming: '생성 중...'
+    streaming: '생성 중...',
+    emptySelectionTitle: '선택된 텍스트가 없습니다',
+    emptySelectionHint:
+      '단어 또는 문장을 다시 선택해 주세요. 이미 선택한 경우 시스템 접근성 권한을 확인하세요.',
+    openAccessibility: '권한 확인'
   },
   accessibilityModal: {
     title: '선택 어시스턴트 · 접근성 권한 필요',

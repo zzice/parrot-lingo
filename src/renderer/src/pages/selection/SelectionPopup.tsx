@@ -136,7 +136,11 @@ export const SelectionPopup: React.FC = () => {
       force = false
     ) => {
       const cleanText = text.trim()
-      if (!cleanText || !window.api?.ai) return
+      if (!cleanText || !window.api?.ai) {
+        setLoading(false)
+        setIsStreaming(false)
+        return
+      }
 
       const modelKey = overrideModelKey ?? currentModelKeyRef.current
       const cacheKey = `${cleanText}:::${context || ''}:::${action}:::${modelKey}`
@@ -335,61 +339,52 @@ export const SelectionPopup: React.FC = () => {
     setSourceApp('')
     sourceAppRef.current = null
     setResult(null)
-    setLoading(true)
+    setLoading(false)
     setIsStreaming(false)
     setSaveInfo(null)
     setShowOriginal(false)
   }, [])
-
-  // 当窗口隐藏或失去焦点时立即重置状态，保证下一次划词唤起时绝不闪烁旧内容
-  useEffect(() => {
-    const handleVisibilityChange = (): void => {
-      if (document.visibilityState === 'hidden') {
-        resetState()
-      }
-    }
-    const handlePageHide = (): void => {
-      resetState()
-    }
-    document.addEventListener('visibilitychange', handleVisibilityChange)
-    window.addEventListener('pagehide', handlePageHide)
-    return () => {
-      document.removeEventListener('visibilitychange', handleVisibilityChange)
-      window.removeEventListener('pagehide', handlePageHide)
-    }
-  }, [resetState])
 
   const updateContent = useCallback(
     (
       payload: { text: string; context?: string; action?: string; sourceApp?: string },
       force = false
     ) => {
-      if (!payload?.text) return
       clearCountdown()
       if (streamAbortRef.current) {
         streamAbortRef.current()
         streamAbortRef.current = null
       }
       setResult(null)
-      setLoading(true)
-      setIsStreaming(false)
       setSaveInfo(null)
       setShowOriginal(false)
 
-      setSelectedText(payload.text)
-      setContextText(payload.context || '')
-      const app = payload.sourceApp || ''
+      const rawText = payload?.text || ''
+      const cleanText = rawText.trim()
+
+      setSelectedText(rawText)
+      setContextText(payload?.context || '')
+      const app = payload?.sourceApp || ''
       setSourceApp(app)
       sourceAppRef.current = app
 
-      const type = payload.action === 'explain' ? 'explain' : 'translate'
+      const type = payload?.action === 'explain' ? 'explain' : 'translate'
       setActionType(type)
       const title =
         type === 'translate'
           ? t('selectionSettings.actionTranslate') || '翻译'
           : t('selectionSettings.actionExplain') || '解释'
       document.title = `${title} - ParrotLingo`
-      fetchExplanation(payload.text, payload.context, type, undefined, force)
+
+      if (!cleanText) {
+        setLoading(false)
+        setIsStreaming(false)
+        return
+      }
+
+      setLoading(true)
+      setIsStreaming(false)
+      fetchExplanation(cleanText, payload?.context, type, undefined, force)
     },
     [fetchExplanation, t]
   )
@@ -428,7 +423,7 @@ export const SelectionPopup: React.FC = () => {
           fetchProviders()
           fetchSettings()
           setCurrentModelKey('follow')
-          if (payload?.text) {
+          if (payload) {
             updateContentRef.current(payload, false)
           }
         }
@@ -512,6 +507,7 @@ export const SelectionPopup: React.FC = () => {
   }, [resetState])
 
   const handleRegenerate = useCallback((): void => {
+    if (!selectedText.trim()) return
     fetchExplanation(selectedText, contextText, actionType, currentModelKey, true)
   }, [fetchExplanation, selectedText, contextText, actionType, currentModelKey])
 
@@ -660,141 +656,173 @@ export const SelectionPopup: React.FC = () => {
         </div>
 
         {/* 顶部原文与词条标题栏 (纯净展示选中文本) */}
-        <div className="px-4 pt-3 flex items-center justify-between">
-          <div className="flex items-center space-x-2 min-w-0">
-            <span className="text-base font-bold text-slate-900 dark:text-slate-50 truncate max-w-[340px]">
-              {selectedText}
-            </span>
-          </div>
+        {selectedText.trim() && (
+          <div className="px-4 pt-3 flex items-center justify-between">
+            <div className="flex items-center space-x-2 min-w-0">
+              <span className="text-base font-bold text-slate-900 dark:text-slate-50 truncate max-w-[340px]">
+                {selectedText}
+              </span>
+            </div>
 
-          {/* 显示/折叠原文 */}
-          <button
-            type="button"
-            onClick={() => setShowOriginal((prev) => !prev)}
-            className="flex items-center space-x-1 text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer select-none"
-          >
-            <span>
-              {showOriginal ? t('selectionPopup.hideOriginal') : t('selectionPopup.showOriginal')}
-            </span>
-            {showOriginal ? (
-              <ChevronUp className="w-3.5 h-3.5" />
-            ) : (
-              <ChevronDown className="w-3.5 h-3.5" />
-            )}
-          </button>
-        </div>
+            {/* 显示/折叠原文 */}
+            <button
+              type="button"
+              onClick={() => setShowOriginal((prev) => !prev)}
+              className="flex items-center space-x-1 text-[11px] text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 transition-colors cursor-pointer select-none"
+            >
+              <span>
+                {showOriginal ? t('selectionPopup.hideOriginal') : t('selectionPopup.showOriginal')}
+              </span>
+              {showOriginal ? (
+                <ChevronUp className="w-3.5 h-3.5" />
+              ) : (
+                <ChevronDown className="w-3.5 h-3.5" />
+              )}
+            </button>
+          </div>
+        )}
 
         {/* 音标与注音展示区域 */}
-        {(() => {
-          const isEnglishSelection = /^[a-zA-Z\s'’-]+$/.test((selectedText || '').trim())
-          const nonEnglishPhonetic =
-            result?.phonetic ||
-            (!isEnglishSelection ? result?.phoneticUs || result?.phoneticUk : undefined)
+        {selectedText.trim() &&
+          (() => {
+            const isEnglishSelection = /^[a-zA-Z\s'’-]+$/.test((selectedText || '').trim())
+            const nonEnglishPhonetic =
+              result?.phonetic ||
+              (!isEnglishSelection ? result?.phoneticUs || result?.phoneticUk : undefined)
 
-          if (isEnglishSelection) {
-            if (!result?.phoneticUk && !result?.phoneticUs && !result?.phonetic) return null
+            if (isEnglishSelection) {
+              if (!result?.phoneticUk && !result?.phoneticUs && !result?.phonetic) return null
+              return (
+                <div className="px-4 pt-1.5 flex items-center flex-wrap gap-2 text-xs font-mono">
+                  {/* 英式音标 */}
+                  {result.phoneticUk && (
+                    <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
+                      <span className="text-[10px] font-bold text-slate-400 font-sans">英</span>
+                      <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                        {result.phoneticUk}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speak(selectedText, 'en-GB')}
+                        className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
+                        title="英音朗读"
+                      >
+                        <Volume2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+
+                  {/* 美式音标 */}
+                  {result.phoneticUs && (
+                    <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
+                      <span className="text-[10px] font-bold text-slate-400 font-sans">美</span>
+                      <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                        {result.phoneticUs}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speak(selectedText, 'en-US')}
+                        className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
+                        title="美音朗读"
+                      >
+                        <Volume2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+
+                  {/* 兜底单音标 */}
+                  {!result.phoneticUk && !result.phoneticUs && result.phonetic && (
+                    <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300">
+                      <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                        {result.phonetic}
+                      </span>
+                      <button
+                        type="button"
+                        onClick={() => speak(selectedText, 'en-US')}
+                        className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
+                        title="朗读"
+                      >
+                        <Volume2 className="w-3 h-3" />
+                      </button>
+                    </div>
+                  )}
+                </div>
+              )
+            }
+
+            // 非英语单词（韩文/日文/中文/法文等）专属注音标签
+            if (!nonEnglishPhonetic) return null
+
+            const getNativeLabel = (str: string, detected?: string): string => {
+              if (detected === 'ja' || /[\u3040-\u309F\u30A0-\u30FF]/.test(str)) return '假名'
+              if (detected === 'zh' || /[\u4E00-\u9FA5]/.test(str)) return '拼音'
+              return '读音'
+            }
+
             return (
               <div className="px-4 pt-1.5 flex items-center flex-wrap gap-2 text-xs font-mono">
-                {/* 英式音标 */}
-                {result.phoneticUk && (
-                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
-                    <span className="text-[10px] font-bold text-slate-400 font-sans">英</span>
-                    <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
-                      {result.phoneticUk}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => speak(selectedText, 'en-GB')}
-                      className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
-                      title="英音朗读"
-                    >
-                      <Volume2 className="w-3 h-3" />
-                    </button>
-                  </div>
-                )}
-
-                {/* 美式音标 */}
-                {result.phoneticUs && (
-                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
-                    <span className="text-[10px] font-bold text-slate-400 font-sans">美</span>
-                    <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
-                      {result.phoneticUs}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => speak(selectedText, 'en-US')}
-                      className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
-                      title="美音朗读"
-                    >
-                      <Volume2 className="w-3 h-3" />
-                    </button>
-                  </div>
-                )}
-
-                {/* 兜底单音标 */}
-                {!result.phoneticUk && !result.phoneticUs && result.phonetic && (
-                  <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300">
-                    <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
-                      {result.phonetic}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => speak(selectedText, 'en-US')}
-                      className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
-                      title="朗读"
-                    >
-                      <Volume2 className="w-3 h-3" />
-                    </button>
-                  </div>
-                )}
+                <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
+                  <span className="text-[10px] font-bold text-slate-400 font-sans">
+                    {getNativeLabel(selectedText, result?.detectedLanguage)}
+                  </span>
+                  <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
+                    {nonEnglishPhonetic}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => speak(selectedText)}
+                    className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
+                    title="朗读发音"
+                  >
+                    <Volume2 className="w-3 h-3" />
+                  </button>
+                </div>
               </div>
             )
-          }
-
-          // 非英语单词（韩文/日文/中文/法文等）专属注音标签
-          if (!nonEnglishPhonetic) return null
-
-          const getNativeLabel = (str: string, detected?: string): string => {
-            if (detected === 'ja' || /[\u3040-\u309F\u30A0-\u30FF]/.test(str)) return '假名'
-            if (detected === 'zh' || /[\u4E00-\u9FA5]/.test(str)) return '拼音'
-            return '读音'
-          }
-
-          return (
-            <div className="px-4 pt-1.5 flex items-center flex-wrap gap-2 text-xs font-mono">
-              <div className="inline-flex items-center space-x-1 px-2 py-0.5 rounded-md bg-slate-100/90 dark:bg-slate-800/80 border border-slate-200/60 dark:border-slate-700/60 text-slate-600 dark:text-slate-300 shadow-2xs">
-                <span className="text-[10px] font-bold text-slate-400 font-sans">
-                  {getNativeLabel(selectedText, result?.detectedLanguage)}
-                </span>
-                <span className="font-semibold" style={{ color: 'var(--color-primary)' }}>
-                  {nonEnglishPhonetic}
-                </span>
-                <button
-                  type="button"
-                  onClick={() => speak(selectedText)}
-                  className="p-0.5 text-slate-400 hover:text-[var(--color-primary)] transition-colors cursor-pointer"
-                  title="朗读发音"
-                >
-                  <Volume2 className="w-3 h-3" />
-                </button>
-              </div>
-            </div>
-          )
-        })()}
+          })()}
 
         {/* 折叠的原本文内容卡片 */}
-        {showOriginal && (
+        {showOriginal && selectedText.trim() && (
           <div className="mx-4 mt-2 p-2.5 rounded-lg bg-slate-50 dark:bg-slate-950/60 border border-slate-200/60 dark:border-slate-800/60 text-xs text-slate-600 dark:text-slate-400 italic">
             &ldquo;{contextText || selectedText}&rdquo;
           </div>
         )}
 
         {/* 顶部与翻译内容的分割线间隔 */}
-        <div className="mx-4 mt-2.5 h-px bg-slate-100 dark:border-b dark:border-slate-800/80" />
+        {selectedText.trim() && (
+          <div className="mx-4 mt-2.5 h-px bg-slate-100 dark:border-b dark:border-slate-800/80" />
+        )}
 
         {/* 中部内容展示区 */}
         <div className="flex-1 overflow-y-auto px-4 py-3 space-y-3 text-xs select-text">
-          {loading ? (
+          {!selectedText.trim() && !loading ? (
+            <div className="h-48 flex flex-col items-center justify-center text-center p-6 space-y-3 select-none">
+              <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800 flex items-center justify-center text-slate-400 dark:text-slate-500">
+                <FileQuestion className="w-5 h-5" />
+              </div>
+              <div className="space-y-1">
+                <div className="font-semibold text-slate-700 dark:text-slate-200 text-sm">
+                  {t('selectionPopup.emptySelectionTitle')}
+                </div>
+                <div className="text-xs text-slate-400 dark:text-slate-500 max-w-[280px] leading-relaxed">
+                  {t('selectionPopup.emptySelectionHint')}
+                </div>
+              </div>
+              {isMac && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    if (window.api?.system?.openAccessibilitySettings) {
+                      window.api.system.openAccessibilitySettings()
+                    }
+                  }}
+                  className="mt-1 px-3 py-1.5 rounded-lg text-xs font-medium bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 transition-colors cursor-pointer"
+                >
+                  {t('selectionPopup.openAccessibility')}
+                </button>
+              )}
+            </div>
+          ) : loading ? (
             <div className="h-36 flex flex-col items-center justify-center text-slate-400 space-y-2.5 select-none">
               <div className="flex items-center space-x-2 text-sm text-slate-600 dark:text-slate-300 font-medium">
                 <Loader2
@@ -972,7 +1000,7 @@ export const SelectionPopup: React.FC = () => {
             <button
               type="button"
               onClick={handleRegenerate}
-              disabled={loading}
+              disabled={!selectedText.trim() || loading}
               className="inline-flex items-center space-x-1 px-2 py-1 rounded bg-slate-100 dark:bg-slate-800/80 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-600 dark:text-slate-300 text-[11px] font-medium transition-colors cursor-pointer disabled:opacity-50 whitespace-nowrap shrink-0"
             >
               <RefreshCw

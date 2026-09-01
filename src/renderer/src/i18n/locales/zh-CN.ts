@@ -379,7 +379,10 @@ export default {
     undoTooltip: '撤销本次遇见记录',
     notRecorded: '○ 未记录',
     analyzing: '正在分析...',
-    streaming: '流式生成中...'
+    streaming: '流式生成中...',
+    emptySelectionTitle: '未检测到有效划词内容',
+    emptySelectionHint: '请重新划选单词或句子；若已划选，请检查系统辅助功能授权。',
+    openAccessibility: '检查辅助功能授权'
   },
   accessibilityModal: {
     title: '开启划词助手 · 需要辅助功能授权',

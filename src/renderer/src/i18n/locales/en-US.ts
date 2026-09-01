@@ -390,7 +390,11 @@ export default {
     undoTooltip: 'Undo this encounter record',
     notRecorded: '○ Not Recorded',
     analyzing: 'Analyzing...',
-    streaming: 'Streaming...'
+    streaming: 'Streaming...',
+    emptySelectionTitle: 'No Text Selected',
+    emptySelectionHint:
+      'Please select a word or phrase. If already selected, verify macOS Accessibility permissions.',
+    openAccessibility: 'Check Permissions'
   },
   accessibilityModal: {
     title: 'Enable Selection Assistant · Accessibility Required',

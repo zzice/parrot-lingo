@@ -99,7 +99,7 @@ export const SelectionToolbar: React.FC = () => {
   }, [reportSize])
 
   const handleAction = async (action: 'translate' | 'search' | 'copy') => {
-    if (!selectedText) return
+    if (!selectedText || !selectedText.trim()) return
 
     if (action === 'copy') {
       if (window.api?.selection) {

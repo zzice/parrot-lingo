@@ -381,7 +381,11 @@ export default {
     undoTooltip: '今回の出会い記録を取り消す',
     notRecorded: '○ 未記録',
     analyzing: '分析中...',
-    streaming: '生成中...'
+    streaming: '生成中...',
+    emptySelectionTitle: '選択されたテキストがありません',
+    emptySelectionHint:
+      '単語や文章を再選択してください。選択済みの場合はアクセシビリティ権限を確認してください。',
+    openAccessibility: '権限を確認'
   },
   accessibilityModal: {
     title: '選択アシスタント · アクセシビリティ権限が必要です',
